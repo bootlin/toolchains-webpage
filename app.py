@@ -8,10 +8,14 @@ import sys
 import os
 import unicodedata
 import re
+import json
 
 from datetime import datetime
 
 from jinja2 import FileSystemLoader, Environment
+
+def to_json(value):
+    return json.dumps(value)
 
 def slugify(value):
     """ Note: This was modified from django.utils.text slugify """
@@ -23,6 +27,7 @@ def slugify(value):
 
 jinja_env = Environment(loader=FileSystemLoader(os.getcwd()))
 jinja_env.filters['slugify'] = slugify
+jinja_env.filters['to_json'] = to_json
 template = jinja_env.get_template("index.jinja")
 
 TOOLCHAINS_DIR = "/home/skia/workspace/toolchains_webpage/www"
@@ -47,36 +52,45 @@ def generate():
         }
     """
     start_time = datetime.now()
-    toolchains_by_arch = {}
-    toolchains_by_libc = {}
-    toolchains_by_version = {}
     toolchains = {}
-    for directory in [e for e in os.scandir(TOOLCHAINS_DIR) if e.is_dir()]:
-        toolchains[directory.name] = {}
-        toolchains_by_arch[directory.name] = {}
-        toolchains_by_libc[directory.name] = {}
-        toolchains_by_version[directory.name] = {}
-        for toolchain in [e for e in os.scandir(os.path.join(TOOLCHAINS_DIR, directory.name, "toolchains")) if e.is_file()]:
+    toolchains_tree = {}
+    archs = {}
+    libcs = {}
+    versions = {}
+    for release in [e for e in os.scandir(TOOLCHAINS_DIR) if e.is_dir()]:
+        toolchains[release.name] = {}
+        toolchains_tree[release.name] = {}
+        archs[release.name] = set()
+        libcs[release.name] = set()
+        versions[release.name] = set()
+        for toolchain in [e for e in os.scandir(os.path.join(TOOLCHAINS_DIR, release.name, "toolchains")) if e.is_file()]:
             arch, libc, version = toolchain.name.split("--")
+            version = version.split('-')[0]
+            archs[release.name].add(arch)
+            libcs[release.name].add(libc)
+            versions[release.name].add(version)
             toolchain_infos = {
                     'arch': arch,
                     'libc': libc,
                     'version': version,
                     'name': toolchain.name,
                     }
-            toolchains[directory.name][toolchain.name] = toolchain_infos
-            try: toolchains_by_arch[directory.name][arch].append(toolchain_infos)
-            except: toolchains_by_arch[directory.name][arch] = [toolchain_infos]
-            try: toolchains_by_libc[directory.name][libc].append(toolchain_infos)
-            except: toolchains_by_libc[directory.name][libc] = [toolchain_infos]
-            try: toolchains_by_version[directory.name][version].append(toolchain_infos)
-            except: toolchains_by_version[directory.name][version] = [toolchain_infos]
+            toolchains[release.name][toolchain.name] = toolchain_infos
+            if arch not in toolchains_tree[release.name].keys():
+                toolchains_tree[release.name][arch] = {}
+            if libc not in toolchains_tree[release.name][arch].keys():
+                toolchains_tree[release.name][arch][libc] = {}
+            if version not in toolchains_tree[release.name][arch][libc].keys():
+                toolchains_tree[release.name][arch][libc][version] = []
+
+            toolchains_tree[release.name][arch][libc][version].append(toolchain_infos)
 
     html = template.render(
             toolchains=toolchains,
-            toolchains_by_arch=toolchains_by_arch,
-            toolchains_by_libc=toolchains_by_libc,
-            toolchains_by_version=toolchains_by_version,
+            toolchains_tree=toolchains_tree,
+            archs=archs,
+            libcs=libcs,
+            versions=versions,
             datetime=datetime,
             start_time=start_time
             )

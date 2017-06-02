@@ -7,6 +7,11 @@
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <style type="text/css" media="all">
+.toolchain {
+    display: none;
+}
+        </style>
     </head>
     <body>
         <header>
@@ -17,28 +22,37 @@
             </h4>
         </header>
         <ul class="nav nav-tabs">
-        {% for version in toolchains_by_arch.keys() %}
-            <li {% if loop.first %}class="active"{% endif %}><a data-toggle="tab" href="#{{ version|slugify }}">{{ version }}</a></li>
+        {% for release in toolchains_tree.keys()|sort %}
+            <li {% if loop.first %}class="active"{% endif %}><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
         {% endfor %}
         </ul>
         <div class="tab-content">
-        {% for version in toolchains_by_arch.keys() %}
-            <div id="{{ version|slugify }}" class="tab-pane fade {% if loop.first %}in active{% endif %}">
-                <h2>{{ version }}</h2>
+        {% for release in toolchains_tree.keys() %}
+            <div id="{{ release|slugify }}" class="tab-pane fade {% if loop.first %}in active{% endif %}">
+                <h2>{{ release }}</h2>
                 <div>
                     <span><strong>Select arch</strong></span>
-                    <select class="select_arch">
-                        <option value="" selected>---</option>
-                        {% for arch in toolchains_by_arch[version].keys() %}
-                        <option value="arch_{{ arch }}">{{ arch }}</option>
+                    <select class="{{ release }}_select_arch">
+                        {% for arch in archs[release]|sort %}
+                        <option value="{{ arch }}">{{ arch }}</option>
                         {% endfor %}
                     </select>
+                    <span><strong>Select libc</strong></span>
+                    <select class="{{ release }}_select_libc">
+                        {% for l in libcs[release]|sort %}
+                        <option value="{{ l }}">{{ l }}</option>
+                        {% endfor %}
+                    </select>
+                    <span><strong>Select version</strong></span>
+                    <select class="{{ release }}_select_version">
+                        {% for v in versions[release]|sort %}
+                        <option value="{{ v }}">{{ v }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="button" id="{{ release }}_find" value="Find!" />
                 </div>
-                {% for toolchain in toolchains[version].values() %}
-                    <div class="hidden toolchain arch_{{ toolchain['arch']}}">
-                        {{ toolchain['name'] }}
-                    </div>
-                {% endfor %}
+                <div class="found_toolchain">
+                </div>
             </div>
         {% endfor %}
         </div>
@@ -62,10 +76,29 @@ $(document).ready(function() {
         "scrollCollapse": true,
         "paging":         false
     } );
-    $('.select_arch').click(function() {
-            console.log(this.value);
-        })
 } );
+{% for release in toolchains.keys() %}
+$('input#{{ release }}_find').click(function() {
+    toolchains = {{ toolchains_tree[release]|to_json }};
+        console.log("TROLL");
+        arch = $('select.{{ release }}_select_arch')[0].value;
+        libc = $('select.{{ release }}_select_libc')[0].value;
+        version = $('select.{{ release }}_select_version')[0].value;
+        console.log(arch);
+        console.log(libc);
+        console.log(version);
+        console.log(toolchains);
+        found_toolchain = $('#{{ release|slugify }} .found_toolchain');
+        if (toolchains[arch] && toolchains[arch][libc] && toolchains[arch][libc][version] && toolchains[arch][libc][version].length > 0) {
+            found_toolchain.html(toolchains[arch][libc][version][0]['name']);
+            console.log(found_toolchain.html());
+            console.log("BLEH");
+        } else {
+            found_toolchain.html("No toolchain");
+            console.log("No toolchain");
+        }
+    });
+{% endfor %}
         </script>
     </body>
 </html>
