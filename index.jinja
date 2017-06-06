@@ -11,6 +11,18 @@
 .toolchain {
     display: none;
 }
+.found_toolchain div {
+    display: inline-block;
+}
+.tab-pane div {
+    /* display: inline-block; */
+}
+.manifest {
+    display: none;
+}
+body {
+    padding: 5px;
+}
         </style>
     </head>
     <body>
@@ -30,7 +42,7 @@
         {% for release in toolchains_tree.keys() %}
             <div id="{{ release|slugify }}" class="tab-pane fade {% if loop.first %}in active{% endif %}">
                 <h2>{{ release }}</h2>
-                <div>
+                <div class="hidden">
                     <span><strong>Select arch</strong></span>
                     <select class="{{ release }}_select_arch">
                         {% for arch in archs[release]|sort %}
@@ -54,21 +66,65 @@
                 <div class="found_toolchain">
                 </div>
             </div>
+            <section>
+                <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
+                <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
+                <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
+                <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <td>Arch</td>
+                            {% for l in libcs[release]|sort %}
+                            <td>{{ l }}</td>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in toolchains_tree[release]|sort %}
+                        <tr>
+                            <td>{{ a }}</td>
+                            {% for l in libcs[release]|sort %}
+                            <td>
+                                {% for v in toolchains_tree[release][a][l] %}
+                                <div>
+                                    <h5>{{ v }}</h5>
+                                    {% for t in toolchains_tree[release][a][l][v] %}
+                                    <div class="small">
+                                        {% if t['flag'] == "TEST-OK" %}
+                                        <span class="glyphicon glyphicon-ok-sign text-success"></span>
+                                        {% elif t['flag'] == "SYSTEM-BUILD-FAILED" %}
+                                        <span class="glyphicon glyphicon-remove-sign text-danger"></span>
+                                        {% elif t['flag'] == "CAN-NOT-TEST" %}
+                                        <span class="glyphicon glyphicon-question-sign text-info"></span>
+                                        {% elif t['flag'] == "NO-BOOT" %}
+                                        <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>
+                                        {% endif %}
+                                        <b>{{ t['name'] }}</b>
+                                        <div class="dropdown">
+                                            <button data-toggle="dropdown" class="btn btn-primary btn-sm">
+                                                Show manifest <span class="caret"></span>
+                                            </button>
+                                            <div class="manifest pull-left dropdown-menu">
+                                            <pre>
+                                                {{ t['manifest']}}
+                                            </pre>
+                                        </div>
+                                        <a href="{{ release }}/toolchains/{{ t['name'] }}.tar.bz2" class="btn btn-primary btn-sm">Download</a>
+                                        <a href="{{ release }}/fragments/{{ t['name'] }}.frag" class="btn btn-primary btn-sm">Buildroot fragment</a>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
         {% endfor %}
         </div>
-        <section>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-
-                    </tr>
-                </tbody>
-            </table>
-        </section>
         <script charset="utf-8">
 $(document).ready(function() {
     $('table').DataTable( {
@@ -89,8 +145,19 @@ $('input#{{ release }}_find').click(function() {
         console.log(version);
         console.log(toolchains);
         found_toolchain = $('#{{ release|slugify }} .found_toolchain');
-        if (toolchains[arch] && toolchains[arch][libc] && toolchains[arch][libc][version] && toolchains[arch][libc][version].length > 0) {
-            found_toolchain.html(toolchains[arch][libc][version][0]['name']);
+        if (toolchains[arch] && toolchains[arch][libc] &&
+            toolchains[arch][libc][version] &&
+            toolchains[arch][libc][version].length > 0) {
+            html = "";
+            for (var i = 0; i < toolchains[arch][libc][version].length; i++) {
+                toolchain = toolchains[arch][libc][version][i];
+                html += "<div>";
+                html += "<h3>" + toolchain['name'] + "</h3>";
+                html += toolchain['flag'] + "<br>";
+                html += "<pre class=\"small\">" + toolchain['manifest'] + "</pre>";
+                html += "</div>";
+            }
+            found_toolchain.html(html);
             console.log(found_toolchain.html());
             console.log("BLEH");
         } else {

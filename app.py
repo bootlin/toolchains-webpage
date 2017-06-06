@@ -34,20 +34,14 @@ TOOLCHAINS_DIR = "/home/skia/workspace/toolchains_webpage/www"
 
 def generate():
     """
-    devices = {
-        "device_name": {
-            "test_name": [
-                {
-                    "job_id": 4000,
-                    "job_name": "bleh",
-                    "result": "pass",
-                    },
-                {
-                    "job_id": 4001,
-                    "job_name": "bleh--2",
-                    "result": "fail",
-                    }
-            ]
+    toolchains = {
+        "toolchain_name": <dict, toolchain_infos>
+        }
+    toolchains_tree = {
+        "arch": {
+            "libc": {
+                "version": <dict, toolchain_infos>
+                }
             }
         }
     """
@@ -57,25 +51,38 @@ def generate():
     archs = {}
     libcs = {}
     versions = {}
+    # Iterate over all releases
     for release in [e for e in os.scandir(TOOLCHAINS_DIR) if e.is_dir()]:
+        toolchains_path = os.path.join(TOOLCHAINS_DIR, release.name)
         toolchains[release.name] = {}
         toolchains_tree[release.name] = {}
         archs[release.name] = set()
         libcs[release.name] = set()
         versions[release.name] = set()
-        for toolchain in [e for e in os.scandir(os.path.join(TOOLCHAINS_DIR, release.name, "toolchains")) if e.is_file()]:
-            arch, libc, version = toolchain.name.split("--")
+        # Iterate over all toolchains
+        for toolchain in [e for e in os.scandir(os.path.join(toolchains_path, "toolchains")) if e.is_file()]:
+            toolchain_name = toolchain.name.split(".tar.")[0]
+            arch, libc, version = toolchain_name.split("--")
             version = version.split('-')[0]
             archs[release.name].add(arch)
             libcs[release.name].add(libc)
             versions[release.name].add(version)
+
+            # Prepare the info dict
             toolchain_infos = {
                     'arch': arch,
                     'libc': libc,
                     'version': version,
-                    'name': toolchain.name,
+                    'name': toolchain_name,
                     }
-            toolchains[release.name][toolchain.name] = toolchain_infos
+            with open(os.path.join(toolchains_path, "manifests", toolchain_name + ".txt")) as f:
+                toolchain_infos['manifest'] = f.read()
+            flag = re.search(r"FLAG: (\S*)", toolchain_infos['manifest'])
+            toolchain_infos['flag'] = flag.group(1)
+            toolchain_infos['manifest'] = '\n'.join(toolchain_infos['manifest'].split('\n')[2:-2])
+
+            # Build the two dicts: the raw list and the tree
+            toolchains[release.name][toolchain_name] = toolchain_infos
             if arch not in toolchains_tree[release.name].keys():
                 toolchains_tree[release.name][arch] = {}
             if libc not in toolchains_tree[release.name][arch].keys():
@@ -94,7 +101,7 @@ def generate():
             datetime=datetime,
             start_time=start_time
             )
-    with open("index.html", 'w') as f:
+    with open(os.path.join(TOOLCHAINS_DIR, "index.html"), 'w') as f:
         f.write(html)
     print(html)
     return html
