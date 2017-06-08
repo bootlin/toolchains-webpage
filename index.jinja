@@ -92,13 +92,13 @@ body {
                                     {% for t in toolchains_tree[release][a][l][v] %}
                                     <div class="small">
                                         {% if t['flag'] == "TEST-OK" %}
-                                        <span class="glyphicon glyphicon-ok-sign text-success"></span>
+                                        <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
                                         {% elif t['flag'] == "SYSTEM-BUILD-FAILED" %}
-                                        <span class="glyphicon glyphicon-remove-sign text-danger"></span>
+                                        <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
                                         {% elif t['flag'] == "CAN-NOT-TEST" %}
-                                        <span class="glyphicon glyphicon-question-sign text-info"></span>
+                                        <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
                                         {% elif t['flag'] == "NO-BOOT" %}
-                                        <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>
+                                        <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
                                         {% endif %}
                                         <b>{{ t['name'] }}</b>
                                         <div class="dropdown">
@@ -128,8 +128,6 @@ body {
         <script charset="utf-8">
 $(document).ready(function() {
     $('table').DataTable( {
-        "scrollY":        "80vh",
-        "scrollCollapse": true,
         "paging":         false
     } );
 } );
