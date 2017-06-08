@@ -27,143 +27,162 @@ body {
     </head>
     <body>
         <header>
-            <h4>
+            <h4 class="hidden">
                 Toolchains
                 <small>Last update: {{ datetime.now() }}</small> //
                 <small>Time to generate: {{ datetime.now() - start_time }}</small>
             </h4>
         </header>
         <ul class="nav nav-tabs">
-        {% for release in toolchains_tree.keys()|sort %}
-            <li {% if loop.first %}class="active"{% endif %}><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
-        {% endfor %}
+            <li class="active"> <a data-toggle="tab" href="#main">Main</a></li>
+            {% for release in toolchains_tree.keys()|sort %}
+            <li><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
+            {% endfor %}
         </ul>
         <div class="tab-content">
-        {% for release in toolchains_tree.keys() %}
-            <div id="{{ release|slugify }}" class="tab-pane fade {% if loop.first %}in active{% endif %}">
-                <h2>{{ release }}</h2>
-                <div class="hidden">
-                    <span><strong>Select arch</strong></span>
-                    <select class="{{ release }}_select_arch">
-                        {% for arch in archs[release]|sort %}
-                        <option value="{{ arch }}">{{ arch }}</option>
-                        {% endfor %}
-                    </select>
-                    <span><strong>Select libc</strong></span>
-                    <select class="{{ release }}_select_libc">
-                        {% for l in libcs[release]|sort %}
-                        <option value="{{ l }}">{{ l }}</option>
-                        {% endfor %}
-                    </select>
-                    <span><strong>Select version</strong></span>
-                    <select class="{{ release }}_select_version">
-                        {% for v in versions[release]|sort %}
-                        <option value="{{ v }}">{{ v }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="button" id="{{ release }}_find" value="Find!" />
-                </div>
-                <div class="found_toolchain">
+
+<!-- This is the main page -->
+            {% set main_release="latest" %}
+            <div id="main" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>About</h2>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Download
+                            </div>
+                            <div class="panel-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="select_arch">Select arch</label>
+                                        <select id="select_arch" class="form-control">
+                                            {% for arch in archs[main_release]|sort %}
+                                            <option value="{{ arch }}">{{ arch }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="select_libc">Select libc</label>
+                                        <select id="select_libc" class="form-control">
+                                        </select>
+                                    </div>
+                                    <div id="select_version" class="row">
+                                    </div>
+                                </form>
+                                <div class="found_toolchain">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <section>
-                <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
-                <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
-                <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
-                <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <td>Arch</td>
-                            {% for l in libcs[release]|sort %}
-                            <td>{{ l }}</td>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for a in toolchains_tree[release]|sort %}
-                        <tr>
-                            <td>{{ a }}</td>
-                            {% for l in libcs[release]|sort %}
-                            <td>
-                                {% for v in toolchains_tree[release][a][l] %}
-                                <div>
-                                    <h5>{{ v }}</h5>
-                                    {% for t in toolchains_tree[release][a][l][v] %}
-                                    <div class="small">
-                                        {% if t['flag'] == "TEST-OK" %}
-                                        <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
-                                        {% elif t['flag'] == "SYSTEM-BUILD-FAILED" %}
-                                        <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
-                                        {% elif t['flag'] == "CAN-NOT-TEST" %}
-                                        <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
-                                        {% elif t['flag'] == "NO-BOOT" %}
-                                        <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
-                                        {% endif %}
-                                        <b>{{ t['name'] }}</b>
-                                        <div class="dropdown">
-                                            <button data-toggle="dropdown" class="btn btn-primary btn-sm">
-                                                Show manifest <span class="caret"></span>
-                                            </button>
-                                            <div class="manifest pull-left dropdown-menu">
-                                            <pre>
-                                                {{ t['manifest']}}
-                                            </pre>
+
+<!-- Here comes the big tables -->
+        {% for release in toolchains_tree.keys()|sort %}
+            <div id="{{ release|slugify }}" class="tab-pane fade">
+                <h2>{{ release }}</h2>
+                <div>
+                    <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
+                    <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
+                    <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
+                    <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <td>Arch</td>
+                                {% for l in libcs[release]|sort %}
+                                <td>{{ l }}</td>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in toolchains_tree[release]|sort %}
+                            <tr>
+                                <td>{{ a }}</td>
+                                {% for l in libcs[release]|sort %}
+                                <td>
+                                    {% for v in toolchains_tree[release][a][l] %}
+                                    <div>
+                                        <h5>{{ v }}</h5>
+                                        {% for t in toolchains_tree[release][a][l][v]|sort(reverse=true, attribute='name') %}
+                                        <div class="small">
+                                            <div>
+                                                {% if t['flag'] == "TEST-OK" %}
+                                                <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
+                                                {% elif t['flag'] == "SYSTEM-BUILD-FAILED" %}
+                                                <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
+                                                {% elif t['flag'] == "CAN-NOT-TEST" %}
+                                                <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
+                                                {% elif t['flag'] == "NO-BOOT" %}
+                                                <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
+                                                {% endif %}
+                                                <b>{{ t['name'] }}</b>
+                                            </div>
+                                            <div>
+                                                <span class="dropdown">
+                                                    <button data-toggle="dropdown" class="btn btn-primary btn-xs">
+                                                        Show manifest <span class="caret"></span>
+                                                    </button>
+                                                    <div class="manifest pull-left dropdown-menu small">
+                                                        <pre>
+                                                            {{ t['manifest']}}
+                                                        </pre>
+                                                    </div>
+                                                </span>
+                                                <a href="{{ release }}/toolchains/{{ t['name'] }}.tar.bz2" class="btn btn-primary btn-xs">Download</a>
+                                                <a href="{{ release }}/fragments/{{ t['name'] }}.frag" class="btn btn-primary btn-xs">Buildroot fragment</a>
+                                            </div>
                                         </div>
-                                        <a href="{{ release }}/toolchains/{{ t['name'] }}.tar.bz2" class="btn btn-primary btn-sm">Download</a>
-                                        <a href="{{ release }}/fragments/{{ t['name'] }}.frag" class="btn btn-primary btn-sm">Buildroot fragment</a>
+                                        {% endfor %}
                                     </div>
                                     {% endfor %}
-                                </div>
+                                </td>
                                 {% endfor %}
-                            </td>
+                            </tr>
                             {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </section>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         {% endfor %}
         </div>
         <script charset="utf-8">
 $(document).ready(function() {
-    $('table').DataTable( {
-        "paging":         false
+    tables = $('table').DataTable( {
+        "paging":         false,
+        "autoWidth": false
     } );
-} );
-{% for release in toolchains.keys() %}
-$('input#{{ release }}_find').click(function() {
-    toolchains = {{ toolchains_tree[release]|to_json }};
-        console.log("TROLL");
-        arch = $('select.{{ release }}_select_arch')[0].value;
-        libc = $('select.{{ release }}_select_libc')[0].value;
-        version = $('select.{{ release }}_select_version')[0].value;
-        console.log(arch);
-        console.log(libc);
-        console.log(version);
-        console.log(toolchains);
-        found_toolchain = $('#{{ release|slugify }} .found_toolchain');
-        if (toolchains[arch] && toolchains[arch][libc] &&
-            toolchains[arch][libc][version] &&
-            toolchains[arch][libc][version].length > 0) {
-            html = "";
-            for (var i = 0; i < toolchains[arch][libc][version].length; i++) {
-                toolchain = toolchains[arch][libc][version][i];
-                html += "<div>";
-                html += "<h3>" + toolchain['name'] + "</h3>";
-                html += toolchain['flag'] + "<br>";
-                html += "<pre class=\"small\">" + toolchain['manifest'] + "</pre>";
-                html += "</div>";
-            }
-            found_toolchain.html(html);
-            console.log(found_toolchain.html());
-            console.log("BLEH");
-        } else {
-            found_toolchain.html("No toolchain");
-            console.log("No toolchain");
-        }
-    });
-{% endfor %}
+    toolchains = {{ toolchains_tree[main_release]|to_json }};
+    var $select_arch = $('#select_arch');
+    var $select_libc = $('#select_libc');
+    var $select_version = $('#select_version');
+    $select_arch.change(function() {
+        $select_libc.empty().append(function() {
+            var output = '';
+            $.each(toolchains[$select_arch.val()], function(key, value) {
+                output += '<option>' + key + '</option>';
+            });
+            return output;
+        }).change();
+    }).change();
+    $select_libc.change(function() {
+        $select_version.empty().append(function() {
+            var output = '';
+            var nb = Object.keys(toolchains[$select_arch.val()][$select_libc.val()]).length;
+            $.each(toolchains[$select_arch.val()][$select_libc.val()], function(key, value) {
+                output += '<div class="col-md-' + 12 / nb + '"> ' +
+                    '<a href="{{ main_release }}/toolchains/' + value[0]['name'] + '.tar.bz2" class="center-block btn btn-default" role="button">' + key + '</a>' +
+                    value[0]['manifest'] +
+                    '</div>';
+
+            });
+            return output;
+        });
+    }).change();
+});
         </script>
     </body>
 </html>

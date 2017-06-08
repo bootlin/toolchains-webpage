@@ -30,7 +30,7 @@ jinja_env.filters['slugify'] = slugify
 jinja_env.filters['to_json'] = to_json
 template = jinja_env.get_template("index.jinja")
 
-TOOLCHAINS_DIR = "/home/skia/workspace/toolchains_webpage/www"
+TOOLCHAINS_DIR = "/srv/gitlabci/www"
 
 def generate():
     """
@@ -60,7 +60,7 @@ def generate():
         libcs[release.name] = set()
         versions[release.name] = set()
         # Iterate over all toolchains
-        for toolchain in [e for e in os.scandir(os.path.join(toolchains_path, "toolchains")) if e.is_file()]:
+        for toolchain in [e for e in os.scandir(os.path.join(toolchains_path, "toolchains")) if e.is_file() and not e.name.startswith('.')]:
             toolchain_name = toolchain.name.split(".tar.")[0]
             arch, libc, version = toolchain_name.split("--")
             version = version.split('-')[0]
@@ -103,7 +103,7 @@ def generate():
             )
     with open(os.path.join(TOOLCHAINS_DIR, "index.html"), 'w') as f:
         f.write(html)
-    print(html)
+    print("Page generated in", os.path.join(TOOLCHAINS_DIR, "index.html"))
     return html
 
 if __name__ == "__main__":
