@@ -3,7 +3,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>Toolchains</title>
 
-        <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="http://bootswatch.com/yeti/bootstrap.min.css" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -33,121 +33,47 @@ body {
                 <small>Time to generate: {{ datetime.now() - start_time }}</small>
             </h4>
         </header>
-        <ul class="nav nav-tabs">
-            <li class="active"> <a data-toggle="tab" href="#main">Main</a></li>
-            {% for release in toolchains_tree.keys()|sort %}
-            <li><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
-            {% endfor %}
-        </ul>
-        <div class="tab-content">
-
 <!-- This is the main page -->
-            {% set main_release="latest" %}
-            <div id="main" class="tab-pane fade in active">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2>About</h2>
+        {% set main_release="latest" %}
+        <div id="main">
+            <div class="panel panel-default container">
+                <div class="panel-body">
+                    <div class="row mt centered">
+                        <div class="col-md-6">
+                            <h2>About</h2>
 
-                    </div>
-                    <div class="col-md-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                Download
-                            </div>
-                            <div class="panel-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="select_arch">Select arch</label>
-                                        <select id="select_arch" class="form-control">
-                                            {% for arch in archs[main_release]|sort %}
-                                            <option value="{{ arch }}">{{ arch }}</option>
-                                            {% endfor %}
-                                        </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    Download
+                                </div>
+                                <div class="panel-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="select_arch">Select arch</label>
+                                            <select id="select_arch" class="form-control">
+                                                {% for arch in archs[main_release]|sort %}
+                                                <option value="{{ arch }}">{{ arch }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="select_libc">Select libc</label>
+                                            <select id="select_libc" class="form-control">
+                                            </select>
+                                        </div>
+                                        <div id="select_version" class="row">
+                                        </div>
+                                    </form>
+                                    <div class="found_toolchain">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="select_libc">Select libc</label>
-                                        <select id="select_libc" class="form-control">
-                                        </select>
-                                    </div>
-                                    <div id="select_version" class="row">
-                                    </div>
-                                </form>
-                                <div class="found_toolchain">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-<!-- Here comes the big tables -->
-        {% for release in toolchains_tree.keys()|sort %}
-            <div id="{{ release|slugify }}" class="tab-pane fade">
-                <h2>{{ release }}</h2>
-                <div>
-                    <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
-                    <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
-                    <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
-                    <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <td>Arch</td>
-                                {% for l in libcs[release]|sort %}
-                                <td>{{ l }}</td>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for a in toolchains_tree[release]|sort %}
-                            <tr>
-                                <td>{{ a }}</td>
-                                {% for l in libcs[release]|sort %}
-                                <td>
-                                    {% for v in toolchains_tree[release][a][l] %}
-                                    <div>
-                                        <h5>{{ v }}</h5>
-                                        {% for t in toolchains_tree[release][a][l][v]|sort(reverse=true, attribute='name') %}
-                                        <div class="small">
-                                            <div>
-                                                {% if t['flag'] == "TEST-OK" %}
-                                                <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
-                                                {% elif t['flag'] == "SYSTEM-BUILD-FAILED" %}
-                                                <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
-                                                {% elif t['flag'] == "CAN-NOT-TEST" %}
-                                                <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
-                                                {% elif t['flag'] == "NO-BOOT" %}
-                                                <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
-                                                {% endif %}
-                                                <b>{{ t['name'] }}</b>
-                                            </div>
-                                            <div>
-                                                <span class="dropdown">
-                                                    <button data-toggle="dropdown" class="btn btn-primary btn-xs">
-                                                        Show manifest <span class="caret"></span>
-                                                    </button>
-                                                    <div class="manifest pull-left dropdown-menu small">
-                                                        <pre>
-                                                            {{ t['manifest']}}
-                                                        </pre>
-                                                    </div>
-                                                </span>
-                                                <a href="{{ release }}/toolchains/{{ t['name'] }}.tar.bz2" class="btn btn-primary btn-xs">Download</a>
-                                                <a href="{{ release }}/fragments/{{ t['name'] }}.frag" class="btn btn-primary btn-xs">Buildroot fragment</a>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                    {% endfor %}
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        {% endfor %}
         </div>
         <script charset="utf-8">
 $(document).ready(function() {
@@ -174,9 +100,15 @@ $(document).ready(function() {
             var nb = Object.keys(toolchains[$select_arch.val()][$select_libc.val()]).length;
             $.each(toolchains[$select_arch.val()][$select_libc.val()], function(key, value) {
                 output += '<div class="col-md-' + 12 / nb + '"> ' +
-                    '<a href="{{ main_release }}/toolchains/' + value[0]['name'] + '.tar.bz2" class="center-block btn btn-default" role="button">' + key + '</a>' +
-                    value[0]['manifest'] +
-                    '</div>';
+                    '<a href="downloads/{{ main_release }}/toolchains/' + value[value.length - 1]['name'] + '.tar.bz2" class="center-block btn btn-default" role="button">' + key + '</a>' +
+                    '<table class="table table-condensed"><tbody>';
+                $.each(value[value.length - 1]['summary'], function(k, v) {
+                    output += '<tr>';
+                    output += '<td>' + v[0] + '</td>';
+                    output += '<td>' + v[1] + '</td>';
+                    output += '</tr>';
+                });
+                output += '</tbody></table></div>';
 
             });
             return output;

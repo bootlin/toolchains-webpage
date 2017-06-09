@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Toolchains</title>
+
+        <link rel="stylesheet" href="http://bootswatch.com/yeti/bootstrap.min.css" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <header>
+            <h4>
+                Toolchains status
+                <small>Last update: {{ datetime.now() }}</small> //
+                <small>Time to generate: {{ datetime.now() - start_time }}</small>
+            </h4>
+        </header>
+        <ul class="nav nav-tabs">
+            {% for release in toolchains_tree.keys()|sort %}
+            <li {% if loop.first %}class="active"{% endif %}><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+        {% for release in toolchains_tree.keys()|sort %}
+            <div id="{{ release|slugify }}" class="tab-pane fade {% if loop.first %}in active{% endif %}">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2>{{ release }}</h2>
+                        <div>
+                            <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
+                            <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
+                            <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
+                            <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <td>Arch</td>
+                                        {% for l in libcs[release]|sort %}
+                                        <td>{{ l }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for a in toolchains_tree[release] %}
+                                    <tr>
+                                        <td>{{ a }}</td>
+                                        {% for l in libcs[release]|sort %}
+                                        <td>
+                                            {% for v in toolchains_tree[release][a][l] %}
+                                            <div>
+                                                <h5>{{ v }}</h5>
+                                                {% for t in toolchains_tree[release][a][l][v]|reverse %}
+                                                <div>
+                                                    <div>
+                                                        {% if t['flag'] == "TEST-OK" %}
+                                                        <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
+                                                        {% elif t['flag'] == "SYSTEM-BUILD-FAILED" %}
+                                                        <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
+                                                        {% elif t['flag'] == "CAN-NOT-TEST" %}
+                                                        <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
+                                                        {% elif t['flag'] == "NO-BOOT" %}
+                                                        <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
+                                                        {% endif %}
+                                                        <b>{{ t['name'] }}</b>
+                                                    </div>
+                                                    <div>
+                                                        <span class="dropdown">
+                                                            <button data-toggle="dropdown" class="btn btn-primary btn-xs">
+                                                                Show manifest <span class="caret"></span>
+                                                            </button>
+                                                            <div class="manifest pull-left dropdown-menu small">
+                                                                <pre>
+                                                                    {{ t['manifest']}}
+                                                                </pre>
+                                                            </div>
+                                                        </span>
+                                                        <a href="{{ release }}/toolchains/{{ t['name'] }}.tar.bz2" class="btn btn-primary btn-xs">Download</a>
+                                                        <a href="{{ release }}/fragments/{{ t['name'] }}.frag" class="btn btn-primary btn-xs">Buildroot fragment</a>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            {% endfor %}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </body>
+</html>
+
