@@ -77,26 +77,22 @@ def generate():
                     'version': version,
                     'name': toolchain_name,
                     }
-            with open(os.path.join(toolchains_path, "manifests", toolchain_name + ".txt")) as f:
+            with open(os.path.join(toolchains_path, "readmes", toolchain_name + ".txt")) as f:
                 toolchain_infos['manifest'] = f.read()
             flag = re.search(r"FLAG: (\S*)", toolchain_infos['manifest'])
             toolchain_infos['flag'] = flag.group(1)
             toolchain_infos['manifest'] = '\n'.join(toolchain_infos['manifest'].split('\n')[2:-2])
+
             summary_list = ['gdb', 'gcc-final', 'linux', 'uclibc', 'musl', 'glibc']
-            try:
-                found_list = []
-                toolchain_infos['summary'] = []
-                with open(os.path.join(toolchains_path, "summaries", toolchain_name + ".txt")) as f:
-                    summary = csv.reader(f, delimiter=",", quotechar='"')
-                    for row in summary:
-                        if any(e in row[0] for e in summary_list if e not in found_list):
-                            toolchain_infos['summary'].append([row[0], row[1]])
-                            found_list.append(row[0])
-                toolchain_infos['summary'] = sorted(toolchain_infos['summary'], key=lambda e: e[0])
-                print(toolchain_infos['summary'])
-            except:
-                toolchain_infos['summary'] = [l.split()[0:2] for l in toolchain_infos['manifest'].split('\n')
-                                                if any(e in l for e in summary_list)]
+            found_list = []
+            toolchain_infos['summary'] = []
+            with open(os.path.join(toolchains_path, "summaries", toolchain_name + ".csv")) as f:
+                summary = csv.reader(f, delimiter=",", quotechar='"')
+                for row in summary:
+                    if any(e in row[0] for e in summary_list if e not in found_list):
+                        toolchain_infos['summary'].append([row[0], row[1]])
+                        found_list.append(row[0])
+            toolchain_infos['summary'] = sorted(toolchain_infos['summary'], key=lambda e: e[0])
 
             # Build the two dicts: the raw list and the tree
             toolchains[release.name][toolchain_name] = toolchain_infos
