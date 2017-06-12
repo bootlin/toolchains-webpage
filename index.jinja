@@ -25,6 +25,14 @@
                         <div class="col-md-6">
                             <h2>About</h2>
 
+                            <ul>
+                                <li> <a href="downloads/{{ main_release }}/licenses">Toolchains licenses</a> </li>
+                                <li> <a href="downloads/{{ main_release }}/sources">Toolchains sources</a> </li>
+                                <li> <a href="https://github.com/free-electrons/toolchains-builder/issues">Issues</a> </li>
+                                <li> Based on <a href="https://buildroot.org/">buildroot</a> </li>
+                                <li> <a href="https://github.com/free-electrons/toolchains-builder">https://github.com/free-electrons/toolchains-builder</a> </li>
+                                <li> <a href="https://github.com/free-electrons/toolchains-webpage">https://github.com/free-electrons/toolchains-webpage</a> </li>
+                            </ul>
                         </div>
                         <div class="col-md-6">
                             <div class="panel panel-primary">
@@ -82,16 +90,36 @@ $(document).ready(function() {
             var output = '';
             var nb = Object.keys(toolchains[$select_arch.val()][$select_libc.val()]).length;
             $.each(toolchains[$select_arch.val()][$select_libc.val()], function(key, value) {
+                toolchain = value[value.length - 1];
                 output += '<div class="col-md-' + 12 / nb + '"> ' +
-                    '<a href="downloads/{{ main_release }}/toolchains/' + value[value.length - 1]['name'] + '.tar.bz2" class="center-block btn btn-default" role="button">' + key + '</a>' +
-                    '<table class="table table-condensed"><tbody>';
-                $.each(value[value.length - 1]['summary'], function(k, v) {
+                    '<a href="downloads/{{ main_release }}/toolchains/' + toolchain['name'] + '.tar.bz2" class="center-block btn btn-default" role="button">' +
+                    '<div class="h1"><span class="glyphicon glyphicon-download" title="Download"></span></div>' +
+                    'Download ' + key + '</a>';
+                output += "<small>";
+                switch (toolchain['flag']) {
+                    case "TEST-OK":
+                        output += '<span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>Tests passed';
+                        break;
+                    case "SYSTEM-BUILD-FAILED":
+                        output += '<span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>Build test failed';
+                        break;
+                    case "CAN-NOT-TEST":
+                        output += '<span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>Can not test';
+                        break;
+                    case "NO-BOOT":
+                        output += '<span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>Test system did not boot';
+                        break;
+                }
+                output += "</small>";
+                output += '<table class="table table-condensed"><tbody>';
+                $.each(toolchain['summary'], function(k, v) {
                     output += '<tr>';
                     output += '<td>' + v[0] + '</td>';
                     output += '<td>' + v[1] + '</td>';
                     output += '</tr>';
                 });
                 output += '</tbody></table></div>';
+
 
             });
             return output;
