@@ -34,7 +34,7 @@ Time to generate: {{ datetime.now() - start_time }}
 <!-- This is the main page -->
         {% set main_release="releases" %}
         <div id="main">
-            <div class="panel panel-default container">
+            <div class="panel container">
                 <div class="panel-body">
                     <div class="row mt centered">
                         <div class="col-md-6">
@@ -114,19 +114,35 @@ $(document).ready(function() {
                 output += "<small>";
                 switch (toolchain['flag']) {
                     case "TEST-OK":
-                        output += '<span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>Tests passed';
+                        output += '<span data-toggle="tooltip" data-original-title="' +
+                            'This toolchain has been built, and the test system built with it has successfully booted. ' +
+                            'This doesn\'t mean that this toolchain will work in every cases, but it is at least capable of building a Linux kernel with a basic rootfs that boots.' +
+                            '" data-placement="bottom"> ' +
+                            '<span class="glyphicon glyphicon-ok-sign text-success"></span> Tests passed</span>';
                         break;
                     case "SYSTEM-BUILD-FAILED":
-                        output += '<span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>Build test failed';
+                        output += '<span data-toggle="tooltip" data-original-title="' +
+                            'This toolchain has been built, but the test system failed to build with it. ' +
+                            'This doesn\'t mean that this toolchain doesn\'t work, just that it hasn\'t been successfully tested.' +
+                            '" data-placement="bottom"> ' +
+                            '<span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span> Build test failed</span>';
                         break;
                     case "CAN-NOT-TEST":
-                        output += '<span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>Can not test';
+                        output += '<span data-toggle="tooltip" data-original-title="' +
+                            'This toolchain has been built, but the infrastructure does not contains enough informations about testing it. ' +
+                            'This doesn\'t mean that this toolchain doesn\'t work, just that it hasn\'t been fully tested.' +
+                            '" data-placement="bottom"> ' +
+                            '<span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span> Can not test</span>';
                         break;
                     case "NO-BOOT":
-                        output += '<span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>Test system did not boot';
+                        output += '<span data-toggle="tooltip" data-original-title="' +
+                            'This toolchain has been built, but the test system built with it failed to boot. ' +
+                            'This doesn\'t mean that this toolchain doesn\'t work, just that it hasn\'t been successfully tested.' +
+                            '" data-placement="bottom"> ' +
+                            '<span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span> Test system did not boot</span>';
                         break;
                 }
-                output += ' - <a href="downloads/{{ main_release }}/toolchains/' + toolchain['name'] + '.sha256">checksum (sha256)</a>';
+                output += '<br><a href="downloads/{{ main_release }}/toolchains/' + toolchain['name'] + '.sha256">checksum (sha256)</a>';
                 output += "</small>";
                 output += '<table class="table table-condensed"><tbody>';
                 $.each(toolchain['summary'], function(k, v) {
@@ -142,6 +158,7 @@ $(document).ready(function() {
             });
             return output;
         });
+        $('[data-toggle="tooltip"]').tooltip();
     }).change();
 });
         </script>

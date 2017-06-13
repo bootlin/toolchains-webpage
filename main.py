@@ -83,13 +83,14 @@ def generate():
             toolchain_infos['flag'] = flag.group(1)
             toolchain_infos['manifest'] = '\n'.join(toolchain_infos['manifest'].split('\n')[2:-2])
 
-            summary_list = ['gdb', 'gcc-final', 'linux', 'uclibc', 'musl', 'glibc']
+            summary_list = ['gdb', 'gcc-final', 'linux', 'uclibc', 'musl', 'glibc', 'binutils']
             found_list = []
             toolchain_infos['summary'] = []
             with open(os.path.join(toolchains_path, "summaries", toolchain_name + ".csv")) as f:
                 summary = csv.reader(f, delimiter=",", quotechar='"')
                 for row in summary:
                     if any(e in row[0] for e in summary_list if e not in found_list):
+                        row[0] = row[0].replace("gcc-final", "gcc")
                         toolchain_infos['summary'].append([row[0], row[1]])
                         found_list.append(row[0])
             toolchain_infos['summary'] = sorted(toolchain_infos['summary'], key=lambda e: e[0])
