@@ -1,4 +1,9 @@
+<!DOCTYPE html>
 <html>
+<!--
+Last update: {{ datetime.now() }}
+Time to generate: {{ datetime.now() - start_time }}
+-->
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>Toolchains</title>
@@ -7,15 +12,25 @@
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style type="text/css" media="all">
+.navbar-brand a {
+    font-family: 'Ubuntu Mono', sans;
+    font-style: italic;
+}
+.navbar-brand {
+    font-weight: bold;
+}
+</style>
     </head>
     <body>
-        <header>
-            <h4 class="hidden">
-                Toolchains
-                <small>Last update: {{ datetime.now() }}</small> //
-                <small>Time to generate: {{ datetime.now() - start_time }}</small>
-            </h4>
-        </header>
+        <div class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <h5 class="navbar-brand">Toolchains <a class="small"
+                                      href="http://free-electrons.com"><b>free-electrons</b></a></h5>
+                </div>
+            </div>
+        </div>
 <!-- This is the main page -->
         {% set main_release="releases" %}
         <div id="main">
@@ -44,7 +59,7 @@
                                         <div class="form-group">
                                             <label for="select_arch">Select arch</label>
                                             <select id="select_arch" class="form-control">
-                                                {% for arch in archs[main_release]|sort %}
+                                                {% for arch in archs[main_release]|sort -%}
                                                 <option value="{{ arch }}">{{ arch }}</option>
                                                 {% endfor %}
                                             </select>
@@ -89,7 +104,8 @@ $(document).ready(function() {
         $select_version.empty().append(function() {
             var output = '';
             var nb = Object.keys(toolchains[$select_arch.val()][$select_libc.val()]).length;
-            $.each(toolchains[$select_arch.val()][$select_libc.val()], function(key, value) {
+            $.each(Object.keys(toolchains[$select_arch.val()][$select_libc.val()]).sort().reverse(), function(index, key) {
+                value = toolchains[$select_arch.val()][$select_libc.val()][key];
                 toolchain = value[value.length - 1];
                 output += '<div class="col-md-' + 12 / nb + '"> ' +
                     '<a href="downloads/{{ main_release }}/toolchains/' + toolchain['name'] + '.tar.bz2" class="center-block btn btn-default" role="button">' +
@@ -110,6 +126,7 @@ $(document).ready(function() {
                         output += '<span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>Test system did not boot';
                         break;
                 }
+                output += ' - <a href="downloads/{{ main_release }}/toolchains/' + toolchain['name'] + '.sha256">checksum (sha256)</a>';
                 output += "</small>";
                 output += '<table class="table table-condensed"><tbody>';
                 $.each(toolchain['summary'], function(k, v) {
@@ -118,7 +135,8 @@ $(document).ready(function() {
                     output += '<td>' + v[1] + '</td>';
                     output += '</tr>';
                 });
-                output += '</tbody></table></div>';
+                output += '</tbody></table>';
+                output += '</div>';
 
 
             });
