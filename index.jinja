@@ -37,8 +37,8 @@ Time to generate: {{ datetime.now() - start_time }}
             <div class="panel container">
                 <div class="panel-body">
                     <div class="row mt centered">
-                        <div class="col-md-6">
-                            <h2>About</h2>
+                        <div class="col-md-6 text-justify">
+                            <h2 style="margin-top: 0px;">About</h2>
 			    <p>This site provides a large number of ready-to-use cross-compilation toolchains, targetting the Linux operating system on a large number of architectures.</p>
 			    <p>Based on <a href="http://gcc.gnu.org">gcc</a> and <a href="https://www.gnu.org/software/binutils/">binutils</a>, those toolchains are provided in several variants with the <a href="https://www.gnu.org/software/libc/">glibc</a>, <a href="https://uclibc-ng.org/">uClibc-ng</a> and <a href="http://www.musl-libc.org/">musl</a> C libraries. The toolchains are built using the <a href="http://buildroot.org">Buildroot</a> build system.</p>
 			    <p>Most toolchains are tested by building a Linux kernel and Linux userspace, and booting it under Qemu. This is of course not possible on some CPU architectures.</p>
