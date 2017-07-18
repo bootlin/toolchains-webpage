@@ -61,8 +61,11 @@ def generate():
         archs[release.name] = set()
         libcs[release.name] = set()
         versions[release.name] = set()
+        toolchain_list = []
+        for a in os.scandir(os.path.join(toolchains_path, "toolchains")):
+            toolchain_list += os.scandir(os.path.join(toolchains_path, "toolchains", a.name, 'available_toolchains'))
         # Iterate over all toolchains
-        for toolchain in sorted([e for e in os.scandir(os.path.join(toolchains_path, "toolchains")) if e.is_file() and not e.name.startswith('.') and not e.name.endswith(".sha256")], key=lambda t: t.name):
+        for toolchain in sorted([e for e in toolchain_list if e.is_file() and not e.name.startswith('.') and not e.name.endswith(".sha256")], key=lambda t: t.name):
             toolchain_name = toolchain.name.split(".tar.")[0]
             arch, libc, version = toolchain_name.split("--")
             version = version.split('-20')[0]
@@ -77,7 +80,7 @@ def generate():
                     'version': version,
                     'name': toolchain_name,
                     }
-            with open(os.path.join(toolchains_path, "readmes", toolchain_name + ".txt")) as f:
+            with open(os.path.join(toolchains_path, "toolchains", arch, "readmes", toolchain_name + ".txt")) as f:
                 toolchain_infos['manifest'] = f.read()
             flag = re.search(r"FLAG: (\S*)", toolchain_infos['manifest'])
             toolchain_infos['flag'] = flag.group(1)
@@ -86,7 +89,7 @@ def generate():
             summary_list = ['gdb', 'gcc-final', 'linux', 'uclibc', 'musl', 'glibc', 'binutils']
             found_list = []
             toolchain_infos['summary'] = []
-            with open(os.path.join(toolchains_path, "summaries", toolchain_name + ".csv")) as f:
+            with open(os.path.join(toolchains_path, "toolchains", arch, "summaries", toolchain_name + ".csv")) as f:
                 summary = csv.reader(f, delimiter=",", quotechar='"')
                 for row in summary:
                     if any(e in row[0] for e in summary_list if e not in found_list):

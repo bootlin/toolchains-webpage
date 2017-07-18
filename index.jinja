@@ -116,7 +116,7 @@ $(document).ready(function() {
                 value = toolchains[$select_arch.val()][$select_libc.val()][key];
                 toolchain = value[value.length - 1];
                 output += '<div class="col-md-' + 12 / nb + '"> ' +
-                    '<a href="downloads/{{ main_release }}/toolchains/' + toolchain['name'] + '.tar.bz2" class="center-block btn btn-default" role="button">' +
+                    '<a href="downloads/{{ main_release }}/toolchains/' + toolchain['arch'] + '/tarballs/' + toolchain['name'] + '.tar.bz2" class="center-block btn btn-default" role="button">' +
                     '<div class="h1"><span class="glyphicon glyphicon-download" title="Download"></span></div>' +
                     'Download ' + key + '</a>';
                 output += "<small>";
@@ -150,7 +150,7 @@ $(document).ready(function() {
                             '<span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span> Test system did not boot</span>';
                         break;
                 }
-                output += '<br><a href="downloads/{{ main_release }}/toolchains/' + toolchain['name'] + '.sha256">checksum (sha256)</a>';
+                output += '<br><a href="downloads/{{ main_release }}/toolchains/' + toolchain['arch'] + '/tarballs/' + toolchain['name'] + '.sha256">checksum (sha256)</a>';
                 output += "</small>";
                 output += '<table class="table table-condensed"><tbody>';
                 $.each(toolchain['summary'], function(k, v) {
