@@ -53,7 +53,7 @@ def generate():
     archs = {}
     libcs = {}
     versions = {}
-    # Iterate over all releases
+    # Iterate over all releases
     for release in [e for e in os.scandir(TOOLCHAINS_DIR) if e.is_dir()]:
         toolchains_path = os.path.join(TOOLCHAINS_DIR, release.name)
         toolchains[release.name] = {}
@@ -63,7 +63,10 @@ def generate():
         versions[release.name] = set()
         toolchain_list = []
         for a in os.scandir(os.path.join(toolchains_path, "toolchains")):
-            toolchain_list += os.scandir(os.path.join(toolchains_path, "toolchains", a.name, 'available_toolchains'))
+            try:
+                toolchain_list += os.scandir(os.path.join(toolchains_path, "toolchains", a.name, 'available_toolchains'))
+            except FileNotFoundError:
+                pass
         # Iterate over all toolchains
         for toolchain in sorted([e for e in toolchain_list if e.is_file() and not e.name.startswith('.') and not e.name.endswith(".sha256")], key=lambda t: t.name):
             toolchain_name = toolchain.name.split(".tar.")[0]
@@ -73,7 +76,7 @@ def generate():
             libcs[release.name].add(libc)
             versions[release.name].add(version)
 
-            # Prepare the info dict
+            # Prepare the info dict
             toolchain_infos = {
                     'arch': arch,
                     'libc': libc,
