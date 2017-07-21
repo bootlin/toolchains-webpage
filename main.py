@@ -16,6 +16,8 @@ from datetime import datetime
 
 from jinja2 import FileSystemLoader, Environment
 
+import mistune
+
 def to_json(value):
     return json.dumps(value)
 
@@ -29,6 +31,7 @@ def slugify(value):
 
 jinja_env = Environment(loader=FileSystemLoader(os.getcwd()))
 jinja_env.filters['slugify'] = slugify
+jinja_env.filters['markdown'] = mistune.Markdown()
 jinja_env.filters['to_json'] = to_json
 
 TOOLCHAINS_DIR = "/srv/gitlabci/www/downloads"
@@ -112,8 +115,8 @@ def generate():
 
             toolchains_tree[release.name][arch][libc][version].append(toolchain_infos)
 
-    for p in ['index', 'status']:
-        template = jinja_env.get_template(p + ".jinja")
+    for p in ['index', 'status', 'faq', 'changelog']:
+        template = jinja_env.get_template("templates/%s.jinja" % p)
         html = template.render(
                 toolchains=toolchains,
                 toolchains_tree=toolchains_tree,
