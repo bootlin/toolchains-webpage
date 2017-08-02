@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<!--
+Last update: {{ datetime.now() }}
+Time to generate: {{ datetime.now() - start_time }}
+-->
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>All {{ arch }} toolchains - Cross-compilation toolchains for Linux</title>
+
+        <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style type="text/css" media="all">
+.navbar-brand a {
+    font-family: 'Ubuntu Mono', sans;
+    font-style: italic;
+}
+.navbar-brand {
+    font-weight: bold;
+}
+</style>
+    <body>
+        <div class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <h5 class="navbar-brand">Toolchains <a class="small"
+                                      href="http://free-electrons.com"><b>free-electrons</b></a></h5>
+                </div>
+            </div>
+        </div>
+        <div class="panel container">
+            <div class="panel-body">
+                <div class="row mt centered">
+                    <div class="col-md-12 text-justify">
+                        <h2 style="margin-top: 0px;">All {{ arch }} toolchains</h2>
+                        <p> <a href="index.html">Return to the toolchains</a></p>
+                        <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
+                        <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
+                        <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
+                        <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
+                        {% for l in toolchains.libc_list(release) %}
+                        {% if toolchains.get_by_arch_and_libc(release, arch, l) %}
+                        <h5>{{ l }}</h5>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <td>Toolchain</td>
+                                    <td>GCC</td>
+                                    <td>GDB</td>
+                                    <td>Linux headers</td>
+                                    <td>{{ l }}</td>
+                                    <td>binutils</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for t in toolchains.get_by_arch_and_libc(release, arch, l)|reverse %}
+                                <tr>
+                                    <td>
+                                        {% if t.flag == "TEST-OK" %}
+                                        <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
+                                        {% elif t.flag == "SYSTEM-BUILD-FAILED" %}
+                                        <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
+                                        {% elif t.flag == "CAN-NOT-TEST" %}
+                                        <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
+                                        {% elif t.flag == "NO-BOOT" %}
+                                        <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
+                                        {% endif %}
+                                        {{ t.name }}
+                                        <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.name }}.tar.bz2">Download</a>
+                                        <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.name }}.sha256">sha256</a>
+                                    </td>
+                                    <td>{{ t.get_gcc_version() }}</td>
+                                    <td>{{ t.get_gdb_version() or '-' }}</td>
+                                    <td>{{ t.get_linux_version() }}</td>
+                                    <td>{{ t.get_libc_version() }}</td>
+                                    <td>{{ t.get_binutils_version() }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+

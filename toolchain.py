@@ -32,6 +32,31 @@ class Toolchain(object):
                 found_list.append(row[0])
         self.summary = sorted(summary, key=lambda e: e[0])
 
+    def get_binutils_version(self):
+        for e in self.summary:
+            if e[0] == 'binutils':
+                return e[1]
+
+    def get_libc_version(self):
+        for e in self.summary:
+            if e[0] == self.libc:
+                return e[1]
+
+    def get_linux_version(self):
+        for e in self.summary:
+            if e[0] == 'linux-headers':
+                return e[1]
+
+    def get_gdb_version(self):
+        for e in self.summary:
+            if e[0] == 'gdb':
+                return e[1]
+
+    def get_gcc_version(self):
+        for e in self.summary:
+            if e[0] == 'gcc':
+                return e[1]
+
     def as_dict(self):
         return {
                 'name': self.name,
@@ -103,3 +128,9 @@ class ToolchainSet(object):
     def get_tree(self, release):
         return self.tree[release]
 
+    def get_by_arch_and_libc(self, release, arch, libc):
+        toolchain_list = []
+        if libc in self.tree[release][arch]:
+            for v in self.tree[release][arch][libc]:
+                toolchain_list += self.tree[release][arch][libc][v]
+        return toolchain_list

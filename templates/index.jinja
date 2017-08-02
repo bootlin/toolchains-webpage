@@ -152,7 +152,7 @@ $(document).ready(function() {
                             '<span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span> Test system did not boot</span>';
                         break;
                 }
-                output += '<br><a href="downloads/{{ main_release }}/toolchains/' + toolchain['arch'] + '/tarballs/' + toolchain['name'] + '.sha256">checksum (sha256)</a>';
+                output += '<br><a href="/downloads/{{ main_release }}/toolchains/' + toolchain['arch'] + '/tarballs/' + toolchain['name'] + '.sha256">checksum (sha256)</a>';
                 output += "</small>";
                 output += '<table class="table table-condensed"><tbody>';
                 $.each(toolchain['summary'], function(k, v) {
@@ -166,6 +166,7 @@ $(document).ready(function() {
 
 
             });
+            output += '<div class="col-md-12"><a href="{{ main_release }}_' + $select_arch.val() + '.html">View all ' + $select_arch.val() + ' toolchains</div>';
             return output;
         });
         $('[data-toggle="tooltip"]').tooltip();

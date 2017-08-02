@@ -73,6 +73,22 @@ def generate():
             f.write(html)
         print("Page generated in", os.path.join(WWW_DIR, p + ".html"))
 
+    main_release = "releases"
+    template = jinja_env.get_template("templates/arch_listing.jinja")
+    for a in toolchains.arch_list(main_release):
+        page_name = "%s_%s" % (main_release, a)
+        html = template.render(
+                release=main_release,
+                arch=a,
+                toolchains=toolchains,
+                datetime=datetime,
+                start_time=start_time
+                )
+        with open(os.path.join(WWW_DIR, page_name + ".html"), 'w') as f:
+            f.write(html)
+        print("Page generated in", os.path.join(WWW_DIR, page_name + ".html"))
+
+
 if __name__ == "__main__":
     generate()
 
