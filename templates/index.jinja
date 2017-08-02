@@ -68,7 +68,7 @@ Time to generate: {{ datetime.now() - start_time }}
                                         <div class="form-group">
                                             <label for="select_arch">Select arch</label>
                                             <select id="select_arch" class="form-control">
-                                                {% for arch in archs[main_release]|sort -%}
+                                                {% for arch in toolchains.arch_list(main_release)|sort -%}
                                                 <option value="{{ arch }}">{{ arch }}</option>
                                                 {% endfor %}
                                             </select>
@@ -90,13 +90,14 @@ Time to generate: {{ datetime.now() - start_time }}
                 </div>
             </div>
         </div>
+
         <script charset="utf-8">
 $(document).ready(function() {
     tables = $('table').DataTable( {
         "paging":         false,
         "autoWidth": false
     } );
-    toolchains = {{ toolchains_tree[main_release]|to_json }};
+    toolchains = {{ toolchains.get_tree(main_release)|to_json }};
     var $select_arch = $('#select_arch');
     var $select_libc = $('#select_libc');
     var $select_version = $('#select_version');

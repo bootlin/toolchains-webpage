@@ -18,12 +18,12 @@
             </h4>
         </header>
         <ul class="nav nav-tabs">
-            {% for release in toolchains_tree.keys()|sort %}
+            {% for release in toolchains.release_list() %}
             <li {% if loop.first %}class="active"{% endif %}><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
             {% endfor %}
         </ul>
         <div class="tab-content">
-        {% for release in toolchains_tree.keys()|sort %}
+        {% for release in toolchains.release_list() %}
             <div id="{{ release|slugify }}" class="tab-pane fade {% if loop.first %}in active{% endif %}">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -37,21 +37,21 @@
                                 <thead>
                                     <tr>
                                         <td>Arch</td>
-                                        {% for l in libcs[release]|sort %}
+                                        {% for l in toolchains.libc_list(release) %}
                                         <td>{{ l }}</td>
                                         {% endfor %}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for a in toolchains_tree[release] %}
+                                    {% for a in toolchains.get_tree(release) %}
                                     <tr>
                                         <td>{{ a }}</td>
-                                        {% for l in libcs[release]|sort %}
+                                        {% for l in toolchains.libc_list(release) %}
                                         <td>
-                                            {% for v in toolchains_tree[release][a][l] %}
+                                            {% for v in toolchains.get_tree(release)[a][l] %}
                                             <div>
                                                 <h5>{{ v }}</h5>
-                                                {% for t in toolchains_tree[release][a][l][v]|reverse %}
+                                                {% for t in toolchains.get_tree(release)[a][l][v]|reverse %}
                                                 <div>
                                                     <div>
                                                         {% if t['flag'] == "TEST-OK" %}
