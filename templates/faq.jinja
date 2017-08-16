@@ -8,8 +8,26 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">FAQ</h2>
     <dl>
-      <dt>Are the toolchains available on x86?</dt>
-      <dd>Not for now, since it would double the number of toolchains, and nobody provided us a true, real world use case.</dd>
+      <dt>Are the toolchains available for x86 32-bit ?</dt>
+      <dd>All our toolchains are currently built to run on x86 64-bit
+      systems. We considered supporting x86 32-bit as well, but this
+      would double the number of toolchains to build, and the x86
+      32-bit architecture is more and more considered deprecated. This
+      is especially true in the context of compilation, where fast and
+	therefore modern systems are generally used.</dd>
+
+      <dt>How long will the toolchains be kept online ?</dt>
+      <dd>We do not plan to remove older toolchains when newer
+      toolchains become available. We will ensure that URLs of
+      existing toolchains will not change so that they can be used for
+      long term projects. However, as a free community service, this
+	is obviously not an absolute guarantee.</dd>
+
+      <dt>My architecture <i>foobar</i> is not support, why ?</dt>
+      <dd>Fill a bug in
+      our <a href="https://github.com/free-electrons/toolchains-builder/issues">issue
+      tracker</a>, and we're most likely going to be interested in
+	adding support for your architecture.</dd>
     </dl>
   </div>
 </div>
