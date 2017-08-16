@@ -29,10 +29,6 @@
                     <div class="panel-body">
                         <h2>{{ release }}</h2>
                         <div>
-                            <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
-                            <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
-                            <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
-                            <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
@@ -66,18 +62,11 @@
                                                         <b>{{ t['name'] }}</b>
                                                     </div>
                                                     <div>
-                                                        <span class="dropdown">
-                                                            <button data-toggle="dropdown" class="btn btn-primary btn-xs">
-                                                                Show manifest <span class="caret"></span>
-                                                            </button>
-                                                            <div class="manifest pull-left dropdown-menu small">
-                                                                <pre>
-                                                                    {{ t['manifest']}}
-                                                                </pre>
-                                                            </div>
-                                                        </span>
-                                                        <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/tarballs/{{ t['name'] }}.tar.bz2" class="btn btn-primary btn-xs">Download</a>
-                                                        <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/fragments/{{ t['name'] }}.frag" class="btn btn-primary btn-xs">Buildroot fragment</a>
+                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/tarballs/{{ t['name'] }}.tar.bz2">Tarball</a>&nbsp;-&nbsp;
+                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/build_logs/{{ t['name'] }}-build.log">Build log</a>&nbsp;-&nbsp;
+                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/build_test_logs/{{ t['name'] }}-test.log">System build log</a>&nbsp;-&nbsp;
+                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/boot_test_logs/{{ t['name'] }}.log">System boot log</a>&nbsp;-&nbsp;
+                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/fragments/{{ t['name'] }}.frag">Buildroot fragment</a>
                                                     </div>
                                                 </div>
                                                 {% endfor %}
