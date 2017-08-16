@@ -62,7 +62,7 @@ def generate():
 
             toolchains.add(release.name, t)
 
-    for p in ['index', 'status', 'faq', 'changelog']:
+    for p in ['index', 'status', 'faq', 'news']:
         template = jinja_env.get_template("templates/%s.jinja" % p)
         html = template.render(
                 toolchains=toolchains,
@@ -87,14 +87,6 @@ def generate():
         with open(os.path.join(WWW_DIR, page_name + ".html"), 'w') as f:
             f.write(html)
         print("Page generated in", os.path.join(WWW_DIR, page_name + ".html"))
-
-template = jinja_env.get_template("templates/faq.jinja")
-html = template.render()
-
-with open(os.path.join("/tmp/faq.html"), 'w') as f:
-    f.write(html)
-
-sys.exit(0)
 
 if __name__ == "__main__":
     generate()
