@@ -88,6 +88,13 @@ def generate():
             f.write(html)
         print("Page generated in", os.path.join(WWW_DIR, page_name + ".html"))
 
+template = jinja_env.get_template("templates/faq.jinja")
+html = template.render()
+
+with open(os.path.join("/tmp/faq.html"), 'w') as f:
+    f.write(html)
+
+sys.exit(0)
 
 if __name__ == "__main__":
     generate()
