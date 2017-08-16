@@ -8,11 +8,24 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">News</h2>
     <dl>
-      <!--
-          <dt>2017-07-21 - Minor update</dt>
+      <dt>2017-08-16 - Toolchain updates</dt>
       <dd>
-        <p>This release concerns only the bleeding-edge toolchains.</p>
-        <p>Those toolchains now feature GCC 7.1 and GDB 8.0.</p>
+        <p>All bleeding edge toolchains have been rebuilt with GCC
+        7.2.0, binutils 2.29, GDB 8.0. The glibc bleeding edge
+        toolchains are now using glibc 2.26.</p>
+
+	<p>The bleeding edge toolchains are now built in a Debian
+	Jessie environment, so they require glibc 2.14 at least on the
+	host machine.</p>
+
+	<p>Stable toolchains have also seen a few updates:</p>
+	<ul>
+	  <li><code>armv7m</code> and <code>m68k-coldfire</code>
+	    toolchains rebuilt with a fix in elf2flt.</li>
+	  <li><code>mips32r5</code> toolchain is now built with NaN
+	    2008 encoding, which is compliant with the Linux kernel
+	    expection for this architecture variant.</li>
+	</ul>
       </dd>
       -->
       <dt>2017-06-19 - First release</dt>
