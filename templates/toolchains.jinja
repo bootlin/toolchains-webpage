@@ -1,0 +1,17 @@
+{% extends "templates/base.jinja" %}
+
+{% block title %}All toolchains{% endblock %}
+{% set active_page = "toolchains" %}
+
+{% block body %}
+<div class="row mt centered">
+  <div class="col-md-12 text-justify">
+    <h2 style="margin-top: 0px;">All toolchains, by architecture</h2>
+    <ul>
+    {% for a in toolchains.arch_list(release) %}
+       <li><a href="{{ main_release }}_{{ a }}.html">{{ a }}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

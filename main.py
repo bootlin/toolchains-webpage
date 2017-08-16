@@ -88,6 +88,19 @@ def generate():
             f.write(html)
         print("Page generated in", os.path.join(WWW_DIR, page_name + ".html"))
 
+    template = jinja_env.get_template("templates/toolchains.jinja")
+    page_name = "toolchains.html"
+    html = template.render(
+        release=main_release,
+        toolchains=toolchains,
+        datetime=datetime,
+        start_time=start_time
+        )
+    with open(os.path.join(WWW_DIR, page_name + ".html"), 'w') as f:
+        f.write(html)
+    print("Page generated in", os.path.join(WWW_DIR, page_name + ".html"))
+
+
 if __name__ == "__main__":
     generate()
 
