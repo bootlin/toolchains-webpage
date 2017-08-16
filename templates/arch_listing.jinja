@@ -1,12 +1,12 @@
 {% extends "templates/base.jinja" %}
 
 {% block title %}{{ arch }} toolchains{% endblock %}
+{% set active_page = "index" %}
 
 {% block body %}
 <div class="row mt centered">
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">All {{ arch }} toolchains</h2>
-    <p> <a href="index.html">Return to the toolchains</a></p>
     <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
     <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
     <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot

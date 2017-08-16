@@ -22,8 +22,14 @@
     <div class="navbar navbar-default">
       <div class="container">
 	<div class="navbar-header">
-          <h5 class="navbar-brand">Toolchains <a class="small"
-        href="http://free-electrons.com"><b>free-electrons</b></a></h5>
+	  <a class="navbar-brand" href="/">toolchains<small>.free-electrons.com</small></a>
+	</div>
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	  <ul class="nav navbar-nav">
+            <li {% if active_page == "index" %}class="active"{% endif %}><a href="/">About</a></li>
+            <li {% if active_page == "changelog" %}class="active"{% endif %}><a href="/changelog.html">Changelog</a></li>
+            <li {% if active_page == "faq" %}class="active"{% endif %}><a href="/faq.html">FAQ</a></li>
+	  </ul>
 	</div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 {% extends "templates/base.jinja" %}
 
 {% block title %}FAQ{% endblock %}
+{% set active_page = "faq" %}
 
 {% block body %}
 <div class="row mt centered">
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">FAQ</h2>
-    <p> <a href="index.html">Return to the toolchains</a></p>
     <dl>
       <dt>Are the toolchains available on x86?</dt>
       <dd>Not for now, since it would double the number of toolchains, and nobody provided us a true, real world use case.</dd>
