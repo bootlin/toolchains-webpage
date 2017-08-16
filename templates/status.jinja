@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>Toolchains</title>
+{% extends "templates/base.jinja" %}
 
-        <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <header>
-            <h4>
-                Toolchains status
-                <small>Last update: {{ datetime.now() }}</small> //
-                <small>Time to generate: {{ datetime.now() - start_time }}</small>
-            </h4>
-        </header>
+{% block title %}Status{% endblock %}
+
+{% block body %}
         <ul class="nav nav-tabs">
             {% for release in toolchains.release_list() %}
             <li {% if loop.first %}class="active"{% endif %}><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
@@ -86,6 +72,4 @@
             </div>
         {% endfor %}
         </div>
-    </body>
-</html>
-
+{% endblock %}

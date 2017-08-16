@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html>
-<!--
-Last update: {{ datetime.now() }}
-Time to generate: {{ datetime.now() - start_time }}
--->
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>Cross-compilation toolchains for Linux - Changelog</title>
+{% extends "templates/base.jinja" %}
 
-        <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<style type="text/css" media="all">
-.navbar-brand a {
-    font-family: 'Ubuntu Mono', sans;
-    font-style: italic;
-}
-.navbar-brand {
-    font-weight: bold;
-}
-</style>
-    </head>
-    <body>
-        <div class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <h5 class="navbar-brand">Toolchains <a class="small"
-                                      href="http://free-electrons.com"><b>free-electrons</b></a></h5>
-                </div>
-            </div>
-        </div>
-<!-- This is the main page -->
-        {% set main_release="releases" %}
-        <div id="main">
-            <div class="panel container">
-                <div class="panel-body">
+{% block title %}Changelog{% endblock %}
+
+{% block body %}
                     <div class="row mt centered">
                         <div class="col-md-12 text-justify">
                             <h2 style="margin-top: 0px;">Changelog</h2>
@@ -83,8 +50,4 @@ Time to generate: {{ datetime.now() - start_time }}
                             </dl>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+{% endblock %}
