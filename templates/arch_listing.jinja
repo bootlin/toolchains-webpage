@@ -3,56 +3,56 @@
 {% block title %}{{ arch }} toolchains{% endblock %}
 
 {% block body %}
-                <div class="row mt centered">
-                    <div class="col-md-12 text-justify">
-                        <h2 style="margin-top: 0px;">All {{ arch }} toolchains</h2>
-                        <p> <a href="index.html">Return to the toolchains</a></p>
-                        <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
-                        <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
-                        <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
-                        <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
-                        {% for l in toolchains.libc_list(release) %}
-                        {% if toolchains.get_by_arch_and_libc(release, arch, l) %}
-                        <h5>{{ l }}</h5>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <td>Toolchain</td>
-                                    <td>GCC</td>
-                                    <td>GDB</td>
-                                    <td>Linux headers</td>
-                                    <td>{{ l }}</td>
-                                    <td>binutils</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for t in toolchains.get_by_arch_and_libc(release, arch, l)|reverse %}
-                                <tr>
-                                    <td>
-                                        {% if t.flag == "TEST-OK" %}
-                                        <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
-                                        {% elif t.flag == "SYSTEM-BUILD-FAILED" %}
-                                        <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
-                                        {% elif t.flag == "CAN-NOT-TEST" %}
-                                        <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
-                                        {% elif t.flag == "NO-BOOT" %}
-                                        <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
-                                        {% endif %}
-                                        {{ t.name }}
-                                        <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.name }}.tar.bz2">Download</a>
-                                        <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.name }}.sha256">sha256</a>
-                                    </td>
-                                    <td>{{ t.get_gcc_version() }}</td>
-                                    <td>{{ t.get_gdb_version() or '-' }}</td>
-                                    <td>{{ t.get_linux_version() }}</td>
-                                    <td>{{ t.get_libc_version() }}</td>
-                                    <td>{{ t.get_binutils_version() }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
+<div class="row mt centered">
+  <div class="col-md-12 text-justify">
+    <h2 style="margin-top: 0px;">All {{ arch }} toolchains</h2>
+    <p> <a href="index.html">Return to the toolchains</a></p>
+    <span class="glyphicon glyphicon-ok-sign text-success"></span>Tests passed
+    <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
+    <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
+    <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
+    {% for l in toolchains.libc_list(release) %}
+    {% if toolchains.get_by_arch_and_libc(release, arch, l) %}
+    <h5>{{ l }}</h5>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <td>Toolchain</td>
+          <td>GCC</td>
+          <td>GDB</td>
+          <td>Linux headers</td>
+          <td>{{ l }}</td>
+          <td>binutils</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in toolchains.get_by_arch_and_libc(release, arch, l)|reverse %}
+        <tr>
+          <td>
+            {% if t.flag == "TEST-OK" %}
+            <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
+            {% elif t.flag == "SYSTEM-BUILD-FAILED" %}
+            <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
+            {% elif t.flag == "CAN-NOT-TEST" %}
+            <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
+            {% elif t.flag == "NO-BOOT" %}
+            <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
+            {% endif %}
+            {{ t.name }}
+            <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.name }}.tar.bz2">Download</a>
+            <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.name }}.sha256">sha256</a>
+          </td>
+          <td>{{ t.get_gcc_version() }}</td>
+          <td>{{ t.get_gdb_version() or '-' }}</td>
+          <td>{{ t.get_linux_version() }}</td>
+          <td>{{ t.get_libc_version() }}</td>
+          <td>{{ t.get_binutils_version() }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

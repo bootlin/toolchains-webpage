@@ -3,59 +3,59 @@
 {% block title %}Cross-compilation toolchains for Linux{% endblock %}
 
 {% block body %}
-                    <div class="row mt centered">
-                        <div class="col-md-6 text-justify">
-                            <h2 style="margin-top: 0px;">About</h2>
-			    <p>This site provides a large number of ready-to-use cross-compilation toolchains, targetting the Linux operating system on a large number of architectures.</p>
-			    <p>Based on <a href="http://gcc.gnu.org">gcc</a> and <a href="https://www.gnu.org/software/binutils/">binutils</a>, those toolchains are provided in several variants with the <a href="https://www.gnu.org/software/libc/">glibc</a>, <a href="https://uclibc-ng.org/">uClibc-ng</a> and <a href="http://www.musl-libc.org/">musl</a> C libraries. The toolchains are built using the <a href="http://buildroot.org">Buildroot</a> build system.</p>
-			    <p>Most toolchains are tested by building a Linux kernel and Linux userspace, and booting it under Qemu. This is of course not possible on some CPU architectures.</p>
-			    <p>For each architecture and C library combination, two versions of the toolchain are provided:</p>
-			    <ul>
-			      <li><i>stable</i>, which uses older proven versions of the toolchain components</li>
-			      <li><i>bleeding-edge</i>, which uses the latest versions of the toolchain components</li>
-			    </ul>
-			    <p>Useful resources:</p>
-                            <ul>
-                                <li> <a href="downloads/{{ main_release }}/licenses">License information for the toolchain components</a> </li>
-                                <li> <a href="downloads/{{ main_release }}/sources">Source code for the toolchain components</a> </li>
-                                <li> <a href="https://github.com/free-electrons/toolchains-builder/issues">Report issues</a> </li>
-                                <li> <a href="https://github.com/free-electrons/toolchains-builder">Tool used to build the toolchains</a> </li>
-                                <li> <a href="https://github.com/free-electrons/toolchains-webpage">This webpage</a> </li>
-                            </ul>
-                <p>Questions: checkout the <a href="faq.html">FAQ</a>, or <a href="mailto:info@free-electrons.com">contact us!</a></p>
-                <p>You can also have a look at the <a href="changelog.html">changelog</a>.</p>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    Download
-                                </div>
-                                <div class="panel-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="select_arch">Select arch</label>
-                                            <select id="select_arch" class="form-control">
-                                                {% for arch in toolchains.arch_list(main_release)|sort -%}
-                                                <option value="{{ arch }}">{{ arch }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="select_libc">Select libc</label>
-                                            <select id="select_libc" class="form-control">
-                                            </select>
-                                        </div>
-                                        <div id="select_version" class="row">
-                                        </div>
-                                    </form>
-                                    <div class="found_toolchain">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="row mt centered">
+  <div class="col-md-6 text-justify">
+    <h2 style="margin-top: 0px;">About</h2>
+    <p>This site provides a large number of ready-to-use cross-compilation toolchains, targetting the Linux operating system on a large number of architectures.</p>
+    <p>Based on <a href="http://gcc.gnu.org">gcc</a> and <a href="https://www.gnu.org/software/binutils/">binutils</a>, those toolchains are provided in several variants with the <a href="https://www.gnu.org/software/libc/">glibc</a>, <a href="https://uclibc-ng.org/">uClibc-ng</a> and <a href="http://www.musl-libc.org/">musl</a> C libraries. The toolchains are built using the <a href="http://buildroot.org">Buildroot</a> build system.</p>
+    <p>Most toolchains are tested by building a Linux kernel and Linux userspace, and booting it under Qemu. This is of course not possible on some CPU architectures.</p>
+    <p>For each architecture and C library combination, two versions of the toolchain are provided:</p>
+    <ul>
+      <li><i>stable</i>, which uses older proven versions of the toolchain components</li>
+      <li><i>bleeding-edge</i>, which uses the latest versions of the toolchain components</li>
+    </ul>
+    <p>Useful resources:</p>
+    <ul>
+      <li> <a href="downloads/{{ main_release }}/licenses">License information for the toolchain components</a> </li>
+      <li> <a href="downloads/{{ main_release }}/sources">Source code for the toolchain components</a> </li>
+      <li> <a href="https://github.com/free-electrons/toolchains-builder/issues">Report issues</a> </li>
+      <li> <a href="https://github.com/free-electrons/toolchains-builder">Tool used to build the toolchains</a> </li>
+      <li> <a href="https://github.com/free-electrons/toolchains-webpage">This webpage</a> </li>
+    </ul>
+    <p>Questions: checkout the <a href="faq.html">FAQ</a>, or <a href="mailto:info@free-electrons.com">contact us!</a></p>
+    <p>You can also have a look at the <a href="changelog.html">changelog</a>.</p>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        Download
+      </div>
+      <div class="panel-body">
+        <form>
+          <div class="form-group">
+            <label for="select_arch">Select arch</label>
+            <select id="select_arch" class="form-control">
+              {% for arch in toolchains.arch_list(main_release)|sort -%}
+              <option value="{{ arch }}">{{ arch }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="select_libc">Select libc</label>
+            <select id="select_libc" class="form-control">
+            </select>
+          </div>
+          <div id="select_version" class="row">
+          </div>
+        </form>
+        <div class="found_toolchain">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <script charset="utf-8">
+<script charset="utf-8">
 $(document).ready(function() {
     tables = $('table').DataTable( {
         "paging":         false,
@@ -136,5 +136,5 @@ $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
     }).change();
 });
-        </script>
+</script>
 {% endblock %}

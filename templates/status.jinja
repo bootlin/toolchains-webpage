@@ -3,73 +3,73 @@
 {% block title %}Status{% endblock %}
 
 {% block body %}
-        <ul class="nav nav-tabs">
-            {% for release in toolchains.release_list() %}
-            <li {% if loop.first %}class="active"{% endif %}><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
-            {% endfor %}
-        </ul>
-        <div class="tab-content">
-        {% for release in toolchains.release_list() %}
-            <div id="{{ release|slugify }}" class="tab-pane fade {% if loop.first %}in active{% endif %}">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h2>{{ release }}</h2>
-                        <div>
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <td>Arch</td>
-                                        {% for l in toolchains.libc_list(release) %}
-                                        <td>{{ l }}</td>
-                                        {% endfor %}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for a in toolchains.get_tree(release) %}
-                                    <tr>
-                                        <td>{{ a }}</td>
-                                        {% for l in toolchains.libc_list(release) %}
-                                        <td>
-                                            {% for v in toolchains.get_tree(release)[a][l] %}
-                                            <div>
-                                                <h5>{{ v }}</h5>
-                                                {% for t in toolchains.get_tree(release)[a][l][v]|reverse %}
-                                                <div>
-                                                    <div>
-                                                        {% if t['flag'] == "TEST-OK" %}
-                                                        <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
-                                                        {% elif t['flag'] == "SYSTEM-BUILD-FAILED" %}
-                                                        <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
-                                                        {% elif t['flag'] == "CAN-NOT-TEST" %}
-                                                        <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
-                                                        {% elif t['flag'] == "NO-BOOT" %}
-                                                        <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
-                                                        {% endif %}
-                                                        <b>{{ t['name'] }}</b>
-                                                    </div>
-                                                    <div>
-                                                      <p class="small">
-                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/tarballs/{{ t['name'] }}.tar.bz2">Tarball</a>&nbsp;-&nbsp;
-                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/build_logs/{{ t['name'] }}-build.log">Build log</a>&nbsp;-&nbsp;
-                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/build_test_logs/{{ t['name'] }}-test.log">System build log</a>&nbsp;-&nbsp;
-                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/boot_test_logs/{{ t['name'] }}.log">System boot log</a>&nbsp;-&nbsp;
-                                                      <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/fragments/{{ t['name'] }}.frag">Buildroot fragment</a>
-                                                      </p>
-                                                    </div>
-                                                </div>
-                                                {% endfor %}
-                                            </div>
-                                            {% endfor %}
-                                        </td>
-                                        {% endfor %}
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+<ul class="nav nav-tabs">
+  {% for release in toolchains.release_list() %}
+  <li {% if loop.first %}class="active"{% endif %}><a data-toggle="tab" href="#{{ release|slugify }}">{{ release }}</a></li>
+  {% endfor %}
+</ul>
+<div class="tab-content">
+  {% for release in toolchains.release_list() %}
+  <div id="{{ release|slugify }}" class="tab-pane fade {% if loop.first %}in active{% endif %}">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h2>{{ release }}</h2>
+        <div>
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <td>Arch</td>
+                {% for l in toolchains.libc_list(release) %}
+                <td>{{ l }}</td>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for a in toolchains.get_tree(release) %}
+              <tr>
+                <td>{{ a }}</td>
+                {% for l in toolchains.libc_list(release) %}
+                <td>
+                  {% for v in toolchains.get_tree(release)[a][l] %}
+                  <div>
+                    <h5>{{ v }}</h5>
+                    {% for t in toolchains.get_tree(release)[a][l][v]|reverse %}
+                    <div>
+                      <div>
+                        {% if t['flag'] == "TEST-OK" %}
+                        <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
+                        {% elif t['flag'] == "SYSTEM-BUILD-FAILED" %}
+                        <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
+                        {% elif t['flag'] == "CAN-NOT-TEST" %}
+                        <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
+                        {% elif t['flag'] == "NO-BOOT" %}
+                        <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
+                        {% endif %}
+                        <b>{{ t['name'] }}</b>
+                      </div>
+                      <div>
+                        <p class="small">
+                          <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/tarballs/{{ t['name'] }}.tar.bz2">Tarball</a>&nbsp;-&nbsp;
+                          <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/build_logs/{{ t['name'] }}-build.log">Build log</a>&nbsp;-&nbsp;
+                          <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/build_test_logs/{{ t['name'] }}-test.log">System build log</a>&nbsp;-&nbsp;
+                          <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/boot_test_logs/{{ t['name'] }}.log">System boot log</a>&nbsp;-&nbsp;
+                          <a href="downloads/{{ release }}/toolchains/{{ t['arch'] }}/fragments/{{ t['name'] }}.frag">Buildroot fragment</a>
+                        </p>
+                      </div>
                     </div>
-                </div>
-            </div>
-        {% endfor %}
+                    {% endfor %}
+                  </div>
+                  {% endfor %}
+                </td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}
