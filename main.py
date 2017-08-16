@@ -89,7 +89,7 @@ def generate():
         print("Page generated in", os.path.join(WWW_DIR, page_name + ".html"))
 
     template = jinja_env.get_template("templates/toolchains.jinja")
-    page_name = "toolchains.html"
+    page_name = "toolchains"
     html = template.render(
         release=main_release,
         toolchains=toolchains,
