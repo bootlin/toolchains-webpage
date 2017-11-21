@@ -122,7 +122,11 @@ $(document).ready(function() {
                 $.each(toolchain['summary'], function(k, v) {
                     output += '<tr>';
                     output += '<td>' + v[0] + '</td>';
-                    output += '<td>' + v[1] + '</td>';
+                    if (v[1].length > 16) {
+                       output += '<td>' + v[1].substring(0, 15) + '...</td>';
+                    } else {
+                       output += '<td>' + v[1] + '</td>';
+                    }
                     output += '</tr>';
                 });
                 output += '</tbody></table>';
