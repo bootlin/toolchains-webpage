@@ -8,12 +8,21 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">News</h2>
     <dl>
-      <dt>2018-07-17 - Bleeding-edge toolchain updates: Binutils 2.31</dt>
+      <dt>2018-07-17 - Bleeding-edge toolchain updates: Binutils 2.31, ncurses fix</dt>
       <dd>
 	<p>Bleeding edge toolchains have been updated to use Binutils
 	2.31, which
 	was <a href="https://sourceware.org/ml/binutils/2018-07/msg00213.html">released
-	a few days ago</a>.</p>
+	a few days ago</a>. Only a few toolchains have not been
+	updated: <i>ARMv7-M</i>, <i>m68k Coldfire</i>
+	and <i>Xtensa</i>, due to issues building with binutils
+	2.31. Those issues will be fixed soon and the corresponding
+	  toolchains will be rebuilt accordingly.</p>
+	<p>In addition, the <i>ncurses</i> library configuration has
+	been fixed to use the <i>terminfo</i> files from the host
+	machine, which should fix usability
+	of <i>gdb</i>. See <a href="https://git.buildroot.org/buildroot/commit/?id=b35ad5d0b45e5288f4019aeaa06b87ef0f2ef016">this
+	Buildroot commit</a> for details.</p>
       </dd>
       <dt>2018-06-25 - Bleeding-edge toolchain updates: GCC 8.1, GDB 8.1</dt>
       <dd>
