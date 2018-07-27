@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*
 #
-# Florent Jacquet <florent.jacquet@free-electrons.com>
+# Florent Jacquet <florent.jacquet@bootlin.com>
 #
 
 import sys
