@@ -8,6 +8,31 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">News</h2>
     <dl>
+      <dt>2020-10-01 - 2020.08 toolchains released, new toolchains</dt>
+      <dd>
+	<p>All toolchains have been updated to be built with Buildroot
+	  2020.08, and some additional updates and fixes. This means
+	  that we are now using:</p>
+	<ul>
+	  <li>For stable toolchains: gcc 9.3.0, binutils 2.33.1, Linux
+	  headers 4.9, gdb 8.3.1, glibc 2.31, uClibc 1.0.34 and musl
+	    1.2.0</li>
+	  <li>For bleeding-edge toolchains: gcc 10.2.0, binutils
+	  2.34, Linux headers 5.4, gdb 9.2, glibc 2.31, uClibc
+	    1.0.34 and musl 1.2.0</li>
+	</ul>
+
+	<p>In addition, we have new toolchains available for a number
+	of additional CPU variants: for <a
+	href="https://toolchains.bootlin.com/releases_powerpc64-e6500.html">powerpc64-e6500</a>,
+	<a
+	href="https://toolchains.bootlin.com/releases_powerpc-e300c3.html">powerpc-e300c3</a>
+	and <a
+	href="https://toolchains.bootlin.com/releases_powerpc-440fp.html">powerpc-440fp</a>.</p>
+
+	<p>Finally, boot testing in Qemu has been extended to cover
+	PowerPC64 E5500, NIOSII and m68k MCF5208.</p>
+      </dd>
       <dt>2020-04-03 - All toolchains updated</dt>
       <dd>
 	<p>All toolchains have been updated to be built with Buildroot
