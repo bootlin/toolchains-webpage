@@ -52,9 +52,9 @@ def generate():
         for toolchain in sorted([e for e in toolchain_list if e.is_file() and not e.name.startswith('.') and not e.name.endswith(".sha256")], key=lambda t: t.name):
             t = Toolchain(toolchain.name)
 
-            with open(os.path.join(toolchains_path, "toolchains", t.arch,
-                "readmes", t.name + ".txt")) as f:
-                t.set_manifest(f)
+            arch_path = os.path.join(toolchains_path, "toolchains", t.arch)
+
+            t.set_test_result(arch_path, t.name)
 
             with open(os.path.join(toolchains_path, "toolchains", t.arch,
                 "summaries", t.name + ".csv")) as f:

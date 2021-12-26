@@ -86,7 +86,7 @@ $(document).ready(function() {
                     '<div class="h1"><span class="glyphicon glyphicon-download" title="Download"></span></div>' +
                     'Download ' + key + '</a>';
                 output += "<small>";
-                switch (toolchain['flag']) {
+                switch (toolchain['test_result']) {
                     case "TEST-OK":
                         output += '<span data-toggle="tooltip" data-original-title="' +
                             'This toolchain has been built, and the test system built with it has successfully booted. ' +

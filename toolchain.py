@@ -1,6 +1,7 @@
 import json
 import csv
 import re
+import os
 
 from collections import OrderedDict
 
@@ -14,11 +15,22 @@ class Toolchain(object):
         self.version = version
         self.name = toolchain_name
 
-    def set_manifest(self, f):
-        manifest = f.read()
-        flag = re.search(r"FLAG: (\S*)", manifest)
-        self.flag = flag.group(1)
-        self.manifest = '\n'.join(manifest.split('\n')[2:-2])
+    def set_test_result(self, arch_path, toolchain_name):
+        # Newer toolchains have a <toolchain-name>-test-result.txt
+        result_txt = os.path.join(arch_path, "test_results",
+                                  toolchain_name + "-test-result.txt")
+        if os.path.exists(result_txt):
+            with open(result_txt) as f:
+                self.test_result = f.read()
+        # Older toolchains have the test result direclty in the
+        # readme.txt file
+        else:
+            readme_txt = os.path.join(arch_path, "readmes",
+                                      toolchain_name + ".txt")
+            with open(readme_txt) as f:
+                readme = f.read()
+                test_result = re.search(r"FLAG: (\S*)", readme)
+                self.test_result = test_result.group(1)
 
     def set_summary(self, f):
         summary_list = ['gdb', 'gcc-final', 'linux', 'uclibc', 'musl', 'glibc', 'binutils']
@@ -63,9 +75,8 @@ class Toolchain(object):
                 'arch': self.arch,
                 'libc': self.libc,
                 'version': self.version,
-                'flag': self.flag,
+                'test_result': self.test_result,
                 'summary': self.summary,
-                'manifest': self.manifest,
                 }
 
 class ToolchainEncoder(json.JSONEncoder):

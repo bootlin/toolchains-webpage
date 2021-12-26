@@ -29,13 +29,13 @@
         {% for t in toolchains.get_by_arch_and_libc(release, arch, l)|reverse %}
         <tr>
           <td>
-            {% if t.flag == "TEST-OK" %}
+            {% if t.test_result == "TEST-OK" %}
             <span class="glyphicon glyphicon-ok-sign text-success" title="Tests passed"></span>
-            {% elif t.flag == "SYSTEM-BUILD-FAILED" %}
+            {% elif t.test_result == "SYSTEM-BUILD-FAILED" %}
             <span class="glyphicon glyphicon-remove-sign text-danger" title="Build test failed"></span>
-            {% elif t.flag == "CAN-NOT-TEST" %}
+            {% elif t.test_result == "CAN-NOT-TEST" %}
             <span class="glyphicon glyphicon-question-sign text-info" title="Can not test"></span>
-            {% elif t.flag == "NO-BOOT" %}
+            {% elif t.test_result == "NO-BOOT" %}
             <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
             {% endif %}
             {{ t.name }}
