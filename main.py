@@ -39,28 +39,30 @@ WWW_DIR = "/srv/gitlabci/www"
 def generate():
     start_time = datetime.now()
     toolchains = ToolchainSet()
-    # Iterate over all releases
-    for release in [e for e in os.scandir(TOOLCHAINS_DIR) if e.is_dir()]:
-        toolchains_path = os.path.join(TOOLCHAINS_DIR, release.name)
-        toolchain_list = []
-        for a in os.scandir(os.path.join(toolchains_path, "toolchains")):
-            try:
-                toolchain_list += os.scandir(os.path.join(toolchains_path, "toolchains", a.name, 'available_toolchains'))
-            except FileNotFoundError:
-                pass
-        # Iterate over all toolchains
-        for toolchain in sorted([e for e in toolchain_list if e.is_file() and not e.name.startswith('.') and not e.name.endswith(".sha256")], key=lambda t: t.name):
-            t = Toolchain(toolchain.name)
+    main_release = "releases"
+    toolchains_path = os.path.join(TOOLCHAINS_DIR, main_release)
+    toolchain_list = []
 
-            arch_path = os.path.join(toolchains_path, "toolchains", t.arch)
+    # Find all toolchains
+    for a in os.scandir(os.path.join(toolchains_path, "toolchains")):
+        try:
+            toolchain_list += os.scandir(os.path.join(toolchains_path, "toolchains",
+                                                      a.name, 'available_toolchains'))
+        except FileNotFoundError:
+            pass
+    # Iterate over all toolchains
+    for toolchain in sorted([e for e in toolchain_list if e.is_file() and not e.name.startswith('.') and not e.name.endswith(".sha256")], key=lambda t: t.name):
+        t = Toolchain(toolchain.name)
 
-            t.set_test_result(arch_path, t.name)
+        arch_path = os.path.join(toolchains_path, "toolchains", t.arch)
 
-            with open(os.path.join(toolchains_path, "toolchains", t.arch,
-                "summaries", t.name + ".csv")) as f:
-                t.set_summary(f)
+        t.set_test_result(arch_path, t.name)
 
-            toolchains.add(release.name, t)
+        with open(os.path.join(toolchains_path, "toolchains", t.arch,
+                               "summaries", t.name + ".csv")) as f:
+            t.set_summary(f)
+
+        toolchains.add(main_release, t)
 
     for p in ['index', 'status', 'faq', 'news']:
         template = jinja_env.get_template("templates/%s.jinja" % p)
@@ -73,7 +75,6 @@ def generate():
             f.write(html)
         print("Page generated in", os.path.join(WWW_DIR, p + ".html"))
 
-    main_release = "releases"
     template = jinja_env.get_template("templates/arch_listing.jinja")
     for a in toolchains.arch_list(main_release):
         page_name = "%s_%s" % (main_release, a)
