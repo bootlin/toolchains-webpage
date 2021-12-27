@@ -21,7 +21,7 @@ class Toolchain(object):
                                   toolchain_name + "-test-result.txt")
         if os.path.exists(result_txt):
             with open(result_txt) as f:
-                self.test_result = f.read()
+                self.test_result = f.read().strip()
         # Older toolchains have the test result direclty in the
         # readme.txt file
         else:
