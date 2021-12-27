@@ -8,6 +8,35 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">News</h2>
     <dl>
+      <dt>2021-12-27 - 2021.11 toolchains released, new toolchains</dt>
+      <dd>
+	<p>All toolchains have been updated to be built with Buildroot
+	  2021.11, and some additional updates and fixes. This means
+	  that we are now using:</p>
+	<ul>
+	  <li>For stable toolchains: gcc 10.3.0, binutils 2.36.1, Linux
+	  headers 4.9, gdb 10.2, glibc 2.34, uClibc 1.0.39 and musl
+	    1.2.2</li>
+	  <li>For bleeding-edge toolchains: gcc 11.2, binutils
+	  2.37, Linux headers 5.4, gdb 11.1, glibc 2.34, uClibc
+	    1.0.39 and musl 1.2.2</li>
+	</ul>
+
+	<p>The <code>riscv64</code> toolchains have been replaced by
+	<code>riscv64-lp64d</code> toolchains, making them more
+	generally useful.</p>
+
+	<p>Runtime testing using Qemu has been added for RISC-V
+	64-bit, m68k-68xxx and OpenRISC.</p>
+
+	<p>The <i>gdb</i> cross-debugger is now compiled with both
+	Python and TUI support.</p>
+
+	<p>Internally, there's been some significant refactoring of
+	the scripts and Gitlab CI pipelines that control the build and
+	testing of those toolchains. Many thanks to Romain Naour for
+	providing the ground work that enabled this refactoring.</p>
+      </dd>
       <dt>2020-10-01 - 2020.08 toolchains released, new toolchains</dt>
       <dd>
 	<p>All toolchains have been updated to be built with Buildroot
