@@ -8,6 +8,51 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">News</h2>
     <dl>
+      <dt>2022-01-24 - New <i>x86-64</i> toolchains</dt>
+      <dd>
+        <p>So far, we had a single toolchain targeting
+        the <i>x86-64</i> architecture,
+        named <a href="https://toolchains.bootlin.com/releases_x86-64-core-i7.html">x86-64-core-i7</a>. However,
+        this toolchain was either compiled with too recent
+        instructions for some platforms, or not sufficiently optimized
+          for others.</p>
+
+	<p>There has been some recent work to standardize some
+	specific "levels" of the <i>x86-64</i> architecture, which
+	have been defined in
+	the <a href="https://gitlab.com/x86-psABIs/x86-64-ABI/">psABI
+	spec</a> and are supported starting from gcc
+	  11.x: <code>x86-64</code>, <code>x86-64-v2</code>,
+	  <code>x86-64-v3</code>, <code>x86-64-v4</code>. See also
+	  this <a href="https://www.phoronix.com/scan.php?page=news_item&px=GCC-11-x86-64-Feature-Levels">Phoronix</a>
+	  article for some more details.</p>
+
+	<p>We are now happy to be offering our toolchains targeting
+	  these four <i>x86-64</i> architecture levels:</p>
+
+	<ul>
+	  <li>The <a href="https://toolchains.bootlin.com/releases_x86-64.html">x86-64</a>
+	  toolchain, which is the most generic, and will work on
+	  all <i>x86-64</i> platforms, starting with Opteron. It only
+	  uses MMX, SSE and SSE2.</li>
+	  <li>The <a href="https://toolchains.bootlin.com/releases_x86-64-v2.html">x86-64-v2</a>
+	  toolchain, which corresponds to the Nehalem generation of
+	  Intel CPUs. It uses MMX, SSE, SSE2, SSE3, SSSE3, SSE4,
+	  SSE4.2.</li>
+	  <li>The <a href="https://toolchains.bootlin.com/releases_x86-64-v3.html">x86-64-v3</a>
+	  toolchain, which corresponds to the Haswell generation of
+	  Intel CPUs. It uses MMX, SSE, SSE2, SSE3, SSSE3, SSE4,
+	  SSE4.2, AVX, AVX2</li>
+	  <li>The <a href="https://toolchains.bootlin.com/releases_x86-64-v4.html">x86-64-v4</a>
+	  toolchain. It uses MMX, SSE, SSE2, SSE3, SSSE3, SSE4,
+	    SSE4.2, AVX, AVX2, AVX512</li>
+	</ul>
+
+	<p>With these new toolchains available for <i>x86-64</i>, we
+	expect to stop maintain the <i>x86-64-core-i7</i> toolchain in
+	the future.</p>
+      </dd>
+
       <dt>2021-12-27 - 2021.11 toolchains released, new toolchains</dt>
       <dd>
 	<p>All toolchains have been updated to be built with Buildroot
