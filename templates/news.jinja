@@ -8,6 +8,34 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">News</h2>
     <dl>
+      <dt>2022-09-24 - 2022.08 toolchains released</dt>
+      <dd>
+
+	<p>Publication of toolchains updated to Buildroot 2022.08, which now means that:</p>
+	<ul>
+	  <li>The <i>bleeding-edge</i> toolchains are based on gcc 12,
+	  binutils 2.39, gdb 12, kernel headers 5.4, glibc 2.35 or
+	    musl 1.2.3 or uclibc-ng 1.0.42.</li>
+	  <li>The <i>stable</i> toolchains are based on gcc 11,
+	    binutils 2.38, gdb 11, kernel headers 4.9, glibc 2.35 or
+	    musl 1.2.3 or uclibc-ng 1.0.42</li>
+	</ul>
+
+	<p>We also have a few new toolchains that appeared:</p>
+	<ul>
+	  <li>Toolchains for the OpenRISC CPU architecture, based on the glibc C library</li>
+	  <li>We now have both <i>stable</i> and <i>bleeding-edge</i>
+	  toolchains for the <i>x86-64-v2</i>, <i>x86-64-v3</i>
+	  and <i>x86-64-v4</i> architecture variants. We used to have
+	  only <i>bleeding-edge</i> toolchains for these variants as
+	  only the latest gcc had support for them.</li>
+	</ul>
+
+	<p>The only toolchain that was not updated is m68k Coldfire,
+	  as we have a regression on <i>elf2flt</i>. This will hopefull
+	  be adressed in the future.</p>
+
+      </dd>
       <dt>2022-01-24 - New <i>x86-64</i> toolchains</dt>
       <dd>
         <p>So far, we had a single toolchain targeting
