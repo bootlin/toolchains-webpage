@@ -11,6 +11,9 @@
     <span class="glyphicon glyphicon-remove-sign text-danger"></span>Build test failed
     <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>Test system did not boot
     <span class="glyphicon glyphicon-question-sign text-info"></span>Can not test
+    {% if arch in obsolete_archs %}
+      <br/><span class="glyphicon glyphicon-exclamation-sign text-warning"></span>This toolchain is obsolete and no longer maintained
+    {% endif %}
     {% for l in toolchains.libc_list(release) %}
     {% if toolchains.get_by_arch_and_libc(release, arch, l) %}
     <h5>{{ l }}</h5>

@@ -5,6 +5,8 @@ import os
 
 from collections import OrderedDict
 
+OBSOLETE_ARCHITECTURES = ["sparcv8"]
+
 class Toolchain(object):
     def __init__(self, file_name):
         toolchain_name = file_name.split(".tar.")[0]

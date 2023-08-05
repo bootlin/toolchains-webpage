@@ -15,7 +15,7 @@ from datetime import datetime
 
 from jinja2 import FileSystemLoader, Environment
 
-from toolchain import Toolchain, ToolchainEncoder, ToolchainSet
+from toolchain import Toolchain, ToolchainEncoder, ToolchainSet, OBSOLETE_ARCHITECTURES
 
 def to_json(value):
     return json.dumps(value, cls=ToolchainEncoder)
@@ -68,6 +68,7 @@ def generate():
         template = jinja_env.get_template("templates/%s.jinja" % p)
         html = template.render(
                 toolchains=toolchains,
+                obsolete_archs=OBSOLETE_ARCHITECTURES,
                 datetime=datetime,
                 start_time=start_time
                 )
@@ -82,6 +83,7 @@ def generate():
                 release=main_release,
                 arch=a,
                 toolchains=toolchains,
+                obsolete_archs=OBSOLETE_ARCHITECTURES,
                 datetime=datetime,
                 start_time=start_time
                 )

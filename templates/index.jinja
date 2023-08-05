@@ -134,6 +134,9 @@ $(document).ready(function() {
 
 
             });
+	    if ({{ obsolete_archs }}.includes($select_arch.val())) {
+		output += '<div class="col-md-12"><span class="glyphicon glyphicon-exclamation-sign text-warning" title="Obsolete toolchain"></span> This toolchain is obsolete and no longer maintained.</span></div>';
+	    }
             output += '<div class="col-md-12"><a href="{{ main_release }}_' + $select_arch.val() + '.html">View all ' + $select_arch.val() + ' toolchains</div>';
             return output;
         });
