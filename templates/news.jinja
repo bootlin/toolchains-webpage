@@ -26,6 +26,9 @@
 	  CVE-2023-4911</li>
 	  <li>The <i>gdb</i> build has been fixed to no longer rely on
 	    uninstalled libbfd.so and libopcodes.so libraries</li>
+	  <li>The <i>zlib</i> library, which was incorrectly present
+	  in the toolchain <i>sysroot</i>, is gone, fixing various
+	  build failures encountered with 2023.08 toolchains.</li>
 	  <li>There are now toolchains for <i>m68k 68xxx</i> based
 	  on <i>uclibc</i> and <i>musl</i> in addition
 	  to <i>glibc</i>, which was already supported</li>
