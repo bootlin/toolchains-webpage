@@ -8,6 +8,30 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">News</h2>
     <dl>
+      <dt>2023-12-27 - 2023.11 toolchains released</dt>
+      <dd>
+        <p>Publication of toolchains updated to Buildroot 2023.11, which now means that:</p>
+	<ul>
+	  <li>The <i>bleeding-edge</i> toolchains are based on gcc 13.2,
+	  binutils 2.41, gdb 14.1, kernel headers 5.10, glibc 2.38, musl
+	    1.2.4 or uclibc-ng 1.0.45.</li>
+	  <li>The <i>stable</i> toolchains are based on gcc 12.3,
+	  binutils 2.40, gdb 13.2, kernel headers 4.14, glibc 2.38,
+	    musl 1.2.4 or uclibc-ng 1.0.45.</li>
+	</ul>
+
+	<p>Also worth noting:</p>
+	<ul>
+	  <li>The glibc version is no longer affected by
+	  CVE-2023-4911</li>
+	  <li>The <i>gdb</i> build has been fixed to no longer rely on
+	    uninstalled libbfd.so and libopcodes.so libraries</li>
+	  <li>There are now toolchains for <i>m68k 68xxx</i> based
+	  on <i>uclibc</i> and <i>musl</i> in addition
+	  to <i>glibc</i>, which was already supported</li>
+	</ul>
+      </dd>
+
       <dt>2023-08-05 - 2023.08 toolchains released</dt>
       <dd>
         <p>Publication of toolchains updated to Buildroot 2023.08 beta, which now means that:</p>
