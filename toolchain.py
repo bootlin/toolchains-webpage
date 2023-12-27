@@ -35,7 +35,7 @@ class Toolchain(object):
                 self.test_result = test_result.group(1)
 
     def set_summary(self, f):
-        summary_list = ['gdb', 'gcc-final', 'linux', 'uclibc', 'musl', 'glibc', 'binutils']
+        summary_list = ['gdb', 'gcc', 'linux', 'uclibc', 'musl', 'glibc', 'binutils']
         found_list = []
         summary = []
         s = csv.reader(f, delimiter=",", quotechar='"')
