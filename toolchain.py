@@ -40,8 +40,8 @@ class Toolchain(object):
         summary = []
         s = csv.reader(f, delimiter=",", quotechar='"')
         for row in s:
+            row[0] = row[0].replace("gcc-final", "gcc")
             if any(e in row[0] for e in summary_list if e not in found_list):
-                row[0] = row[0].replace("gcc-final", "gcc")
                 summary.append([row[0], row[1]])
                 found_list.append(row[0])
         self.summary = sorted(summary, key=lambda e: e[0])
