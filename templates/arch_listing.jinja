@@ -42,7 +42,7 @@
             <span class="glyphicon glyphicon-exclamation-sign text-warning" title="Test system did not boot"></span>
             {% endif %}
             {{ t.name }}
-            <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.name }}.tar.bz2">Download</a>
+            <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.tarball_name }}">Download</a>
             <a href="/downloads/{{ release }}/toolchains/{{ arch }}/tarballs/{{ t.name }}.sha256">sha256</a>
           </td>
           <td>{{ t.get_gcc_version() }}</td>

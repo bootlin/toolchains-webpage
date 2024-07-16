@@ -16,6 +16,10 @@ class Toolchain(object):
         self.libc = libc
         self.version = version
         self.name = toolchain_name
+        self.tarball_name = None
+
+    def set_tarball_name(self, tarball_name):
+        self.tarball_name = tarball_name
 
     def set_test_result(self, arch_path, toolchain_name):
         # Newer toolchains have a <toolchain-name>-test-result.txt
@@ -79,6 +83,7 @@ class Toolchain(object):
                 'version': self.version,
                 'test_result': self.test_result,
                 'summary': self.summary,
+                'tarball_name': self.tarball_name,
                 }
 
 class ToolchainEncoder(json.JSONEncoder):

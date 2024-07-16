@@ -58,6 +58,15 @@ def generate():
 
         t.set_test_result(arch_path, t.name)
 
+        tarball_dir = os.path.join(toolchains_path, "toolchains", t.arch,
+                                   "tarballs")
+        if os.path.exists(os.path.join(tarball_dir, t.name + ".tar.xz"))
+            tarball_name = t.name + ".tar.xz"
+        else:
+            tarball_name = t.name + ".tar.bz2"
+
+        t.set_tarball_name(tarball_name)
+
         with open(os.path.join(toolchains_path, "toolchains", t.arch,
                                "summaries", t.name + ".csv")) as f:
             t.set_summary(f)
