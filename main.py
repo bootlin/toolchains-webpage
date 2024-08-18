@@ -60,7 +60,7 @@ def generate():
 
         tarball_dir = os.path.join(toolchains_path, "toolchains", t.arch,
                                    "tarballs")
-        if os.path.exists(os.path.join(tarball_dir, t.name + ".tar.xz"))
+        if os.path.exists(os.path.join(tarball_dir, t.name + ".tar.xz")):
             tarball_name = t.name + ".tar.xz"
         else:
             tarball_name = t.name + ".tar.bz2"
