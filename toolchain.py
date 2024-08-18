@@ -83,7 +83,7 @@ class Toolchain(object):
                 'version': self.version,
                 'test_result': self.test_result,
                 'summary': self.summary,
-                'tarball_name': self.tarball_name,
+                'tarball-name': self.tarball_name,
                 }
 
 class ToolchainEncoder(json.JSONEncoder):
