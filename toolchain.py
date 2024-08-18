@@ -5,7 +5,7 @@ import os
 
 from collections import OrderedDict
 
-OBSOLETE_ARCHITECTURES = ["sparcv8"]
+OBSOLETE_ARCHITECTURES = []
 
 class Toolchain(object):
     def __init__(self, file_name):
