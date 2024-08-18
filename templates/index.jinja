@@ -82,7 +82,7 @@ $(document).ready(function() {
                 value = toolchains[$select_arch.val()][$select_libc.val()][key];
                 toolchain = value[value.length - 1];
                 output += '<div class="col-md-' + 12 / nb + '"> ' +
-                    '<a href="downloads/{{ main_release }}/toolchains/' + toolchain['arch'] + '/tarballs/' + toolchain['tarball-name']'" class="center-block btn btn-default" role="button">' +
+                    '<a href="downloads/{{ main_release }}/toolchains/' + toolchain['arch'] + '/tarballs/' + toolchain['tarball-name'] + '" class="center-block btn btn-default" role="button">' +
                     '<div class="h1"><span class="glyphicon glyphicon-download" title="Download"></span></div>' +
                     'Download ' + key + '</a>';
                 output += "<small>";
