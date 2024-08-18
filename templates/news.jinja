@@ -8,6 +8,38 @@
   <div class="col-md-12 text-justify">
     <h2 style="margin-top: 0px;">News</h2>
     <dl>
+      <dt>2024-08-18 - 2024.05 toolchains released</dt>
+      <dd>
+        <p>Publication of toolchains updated to Buildroot 2024.05 and
+        a number of extra patches, which now means that:</p>
+	<ul>
+	  <li>The <i>bleeding-edge</i> toolchains are based on gcc 14.2,
+	  binutils 2.42, gdb 15.1, kernel headers 5.15, glibc 2.39, musl
+	    1.2.5 or uclibc-ng 1.0.50.</li>
+	  <li>The <i>stable</i> toolchains are based on gcc 13.3,
+	  binutils 2.41, gdb 14.2, kernel headers 4.19, glibc 2.39,
+	    musl 1.2.5 or uclibc-ng 1.0.50.</li>
+	</ul>
+
+	<p>Also worth noting:</p>
+	<ul>
+	  <li>The toolchain tarballs are now xz-compressed instead of
+	    bz2-compressed</li>
+	  <li>The toolchain tarballs are cleaned up from a lot of
+	    useless files that resulted only from the Buildroot build
+	    process but are in fact not needed for the toolchain itself</li>
+	  <li>The <i>sparcv8</i> toolchain is back, as support for
+	    this architecture has been resurrected in upstream
+	    Buildroot.</li>
+	  <li>There are now toolchains for the <i>s390x</i> built
+	    using the uClibc-ng C library, since support for this
+	    architecture was merged in upstream uClibc-ng</li>
+	  <li>There are now toolchains for the <i>riscv32-ilp32d</i>
+	    built using the uClibc-ng C library, since support for this
+	    architecture was merged in upstream uClibc-ng</li>
+	</ul>
+      </dd>
+
       <dt>2024-03-03 - 2024.02 toolchains released</dt>
       <dd>
         <p>Publication of toolchains updated to Buildroot 2024.02 and
